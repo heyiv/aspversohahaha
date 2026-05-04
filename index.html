@@ -1,824 +1,1583 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Silaba Aspenexo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
-            color: #000000;
-            touch-action: manipulation;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#050714">
+  <title>SÍLABA ASPENEXO // MAIO 2026</title>
 
-        .tile {
-            transition: all 0.15s ease-in-out;
-            user-select: none;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..800,0..100,0..1;1,9..144,400..800,0..100,0..1&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 
-        .tile:active {
-            transform: scale(0.95);
-        }
+  <script src="https://cdn.tailwindcss.com"></script>
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        .shake {
-            animation: shake 0.5s;
-        }
+  <style>
+    /* ============================================================
+       DESIGN TOKENS — OKLCH (perceptually uniform)
+       Subordinated to EGO_DESIGN_STUDIO regra 3.
+       ============================================================ */
+    :root {
+      color-scheme: dark;
+      /* DEFAULT = PINK_NOISE (primavera cyberpunk dawn) */
+      --bg:           oklch(8% 0.02 280);   /* deep void */
+      --bg-deep:      oklch(5% 0.015 280);  /* outer space */
+      --surface:      oklch(13% 0.025 280); /* layer 1 */
+      --tile-bg:      oklch(16% 0.03 280);  /* tile rest */
+      --tile-bg-hov:  oklch(20% 0.04 280);
+      --hairline:     oklch(35% 0.06 280);  /* glow border base */
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .bounce {
-            animation: bounce 0.5s;
-        }
+      --ink:          oklch(96% 0.04 200);   /* cyan-tinted white */
+      --ink-muted:    oklch(72% 0.06 200);
+      --ink-soft:     oklch(50% 0.05 200);
 
-        #toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 8px;
-            padding: 12px;
-            position: fixed;
-            z-index: 50;
-            left: 50%;
-            top: 30px;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s, top 0.3s;
-            font-weight: 600;
-        }
-        #toast.show {
-            visibility: visible;
-            opacity: 1;
-            top: 50px;
-        }
+      --tile-on:      oklch(70% 0.30 320);   /* hot magenta on-state */
+      --tile-on-ink:  oklch(8% 0.02 280);
 
-        .life-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #5a594e;
-            display: inline-block;
-            margin: 0 4px;
-            transition: background-color 0.3s;
-        }
-        .life-dot.lost {
-            background-color: #e5e7eb;
-        }
-    </style>
+      --accent:       oklch(72% 0.27 320);   /* PINK_NOISE primary */
+      --accent-2:     oklch(78% 0.20 200);   /* electric cyan */
+      --accent-ink:   oklch(8% 0.02 280);
+      --accent-hov:   oklch(78% 0.30 320);
+
+      --cat-1: oklch(80% 0.22 70);    /* hot amber */
+      --cat-2: oklch(75% 0.27 145);   /* toxic green */
+      --cat-3: oklch(78% 0.20 215);   /* electric cyan */
+      --cat-4: oklch(70% 0.30 320);   /* hot magenta */
+      --cat-ink: oklch(8% 0.02 280);
+
+      /* glow tokens */
+      --glow-1:       0 0 24px oklch(72% 0.27 320 / 0.6);
+      --glow-2:       0 0 40px oklch(70% 0.30 320 / 0.45);
+      --glow-cyan:    0 0 16px oklch(78% 0.20 200 / 0.5);
+      --glow-soft:    0 0 8px oklch(72% 0.06 200 / 0.3);
+
+      /* spacing 4/8 grid */
+      --s-1: 4px; --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+      --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+
+      /* type scale */
+      --t-12: 0.75rem; --t-14: 0.875rem; --t-16: 1rem;
+      --t-20: 1.25rem; --t-28: 1.75rem; --t-40: 2.5rem;
+
+      /* radii — minimal, FUI prefere quadrado */
+      --r-pill: 999px; --r-md: 4px; --r-lg: 6px;
+
+      /* typography */
+      --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+      --font-body:    "JetBrains Mono", ui-monospace, monospace;
+      --font-soft:    "Bricolage Grotesque", ui-sans-serif, sans-serif;
+      --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    /* ============================================================
+       SEASON CORES — cada uma é uma 'core' do sistema neon
+       PINK_NOISE | OVERLOAD | EMBER_CORE | ICE_CORE
+       ============================================================ */
+    html[data-season="verao"] {
+      /* OVERLOAD — solar high-noon overdrive */
+      --bg:        oklch(8% 0.02 60);
+      --bg-deep:   oklch(5% 0.018 60);
+      --surface:   oklch(13% 0.03 60);
+      --tile-bg:   oklch(16% 0.04 60);
+      --tile-bg-hov: oklch(20% 0.05 60);
+      --hairline:  oklch(38% 0.08 60);
+
+      --ink:       oklch(96% 0.05 90);
+      --ink-muted: oklch(72% 0.08 90);
+      --ink-soft:  oklch(50% 0.06 90);
+
+      --tile-on:     oklch(78% 0.25 65);
+      --tile-on-ink: oklch(8% 0.02 60);
+
+      --accent:     oklch(75% 0.25 50);
+      --accent-2:   oklch(78% 0.22 165);
+      --accent-ink: oklch(8% 0.02 60);
+      --accent-hov: oklch(80% 0.27 50);
+
+      --cat-1: oklch(82% 0.22 90);    /* solar yellow */
+      --cat-2: oklch(75% 0.27 165);   /* acid lime */
+      --cat-3: oklch(78% 0.22 220);   /* pool */
+      --cat-4: oklch(72% 0.28 30);    /* coral fluo */
+      --cat-ink: oklch(8% 0.02 60);
+
+      --glow-1:    0 0 24px oklch(75% 0.25 50 / 0.6);
+      --glow-2:    0 0 40px oklch(72% 0.28 30 / 0.45);
+      --glow-cyan: 0 0 16px oklch(78% 0.22 165 / 0.5);
+    }
+
+    html[data-season="outono"] {
+      /* EMBER_CORE — molten reactor red */
+      --bg:        oklch(8% 0.02 30);
+      --bg-deep:   oklch(5% 0.02 30);
+      --surface:   oklch(13% 0.03 30);
+      --tile-bg:   oklch(16% 0.04 30);
+      --tile-bg-hov: oklch(20% 0.05 30);
+      --hairline:  oklch(35% 0.10 30);
+
+      --ink:       oklch(95% 0.06 60);
+      --ink-muted: oklch(72% 0.08 50);
+      --ink-soft:  oklch(50% 0.06 50);
+
+      --tile-on:     oklch(72% 0.27 30);
+      --tile-on-ink: oklch(8% 0.02 30);
+
+      --accent:     oklch(70% 0.27 25);
+      --accent-2:   oklch(72% 0.20 80);
+      --accent-ink: oklch(8% 0.02 30);
+      --accent-hov: oklch(75% 0.29 25);
+
+      --cat-1: oklch(75% 0.25 60);   /* ember orange */
+      --cat-2: oklch(78% 0.22 90);   /* molten gold */
+      --cat-3: oklch(70% 0.27 25);   /* burning red */
+      --cat-4: oklch(60% 0.22 350);  /* deep crimson */
+      --cat-ink: oklch(8% 0.02 30);
+
+      --glow-1:    0 0 24px oklch(70% 0.27 25 / 0.7);
+      --glow-2:    0 0 40px oklch(75% 0.25 60 / 0.5);
+      --glow-cyan: 0 0 16px oklch(78% 0.22 90 / 0.5);
+    }
+
+    html[data-season="inverno"] {
+      /* ICE_CORE — glacier subzero blue */
+      --bg:        oklch(8% 0.015 240);
+      --bg-deep:   oklch(5% 0.015 240);
+      --surface:   oklch(13% 0.02 240);
+      --tile-bg:   oklch(16% 0.025 240);
+      --tile-bg-hov: oklch(20% 0.03 240);
+      --hairline:  oklch(40% 0.10 240);
+
+      --ink:       oklch(96% 0.04 220);
+      --ink-muted: oklch(72% 0.06 220);
+      --ink-soft:  oklch(50% 0.05 220);
+
+      --tile-on:     oklch(80% 0.20 220);
+      --tile-on-ink: oklch(8% 0.015 240);
+
+      --accent:     oklch(72% 0.22 260);
+      --accent-2:   oklch(78% 0.18 200);
+      --accent-ink: oklch(8% 0.015 240);
+      --accent-hov: oklch(78% 0.24 260);
+
+      --cat-1: oklch(82% 0.15 200);   /* ice */
+      --cat-2: oklch(75% 0.20 240);   /* deep ocean */
+      --cat-3: oklch(78% 0.20 290);   /* aurora violet */
+      --cat-4: oklch(80% 0.15 160);   /* mint frost */
+      --cat-ink: oklch(8% 0.015 240);
+
+      --glow-1:    0 0 24px oklch(72% 0.22 260 / 0.65);
+      --glow-2:    0 0 40px oklch(78% 0.18 200 / 0.5);
+      --glow-cyan: 0 0 16px oklch(78% 0.18 200 / 0.5);
+    }
+
+
+    /* ============================================================
+       BASE — dark cyberpunk void
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      background: var(--bg-deep);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: var(--t-16);
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      touch-action: manipulation;
+    }
+
+    /* radial glow background */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--s-8) var(--s-4) var(--s-12);
+      background:
+        radial-gradient(ellipse at 50% 0%, oklch(from var(--accent) l c h / 0.25) 0%, transparent 60%),
+        radial-gradient(ellipse at 30% 100%, oklch(from var(--accent-2) l c h / 0.18) 0%, transparent 50%),
+        var(--bg-deep);
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* scanlines overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 30;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 2px,
+        oklch(0% 0 0 / 0.18) 2px,
+        oklch(0% 0 0 / 0.18) 3px
+      );
+      mix-blend-mode: multiply;
+    }
+
+    /* grid pattern background */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image:
+        linear-gradient(oklch(from var(--accent) l c h / 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, oklch(from var(--accent) l c h / 0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+    }
+
+    main, header, .season-row, footer { position: relative; z-index: 2; }
+
+    /* ============================================================
+       TYPOGRAPHY — Fraunces glow + JetBrains terminal
+       ============================================================ */
+    .display {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
+      letter-spacing: -0.02em;
+      line-height: 0.95;
+      color: var(--ink);
+      text-shadow:
+        0 0 1px oklch(from var(--accent) l c h / 0.6),
+        0 0 12px oklch(from var(--accent) l c h / 0.4),
+        0 0 32px oklch(from var(--accent) l c h / 0.2);
+    }
+    .display em {
+      font-style: italic;
+      font-weight: 700;
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+      color: var(--accent);
+      text-shadow:
+        0 0 2px oklch(from var(--accent) l c h / 0.8),
+        0 0 16px oklch(from var(--accent) l c h / 0.6),
+        0 0 40px oklch(from var(--accent) l c h / 0.4);
+    }
+    .lede {
+      font-family: var(--font-soft);
+      font-size: var(--t-14);
+      color: var(--ink-muted);
+      letter-spacing: 0.01em;
+    }
+    .caps {
+      font-family: var(--font-mono);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+    }
+    .caps-accent {
+      color: var(--accent-2);
+      text-shadow: var(--glow-cyan);
+    }
+    /* status bar — FUI readout */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 480px;
+      padding: var(--s-2) var(--s-3);
+      margin-bottom: var(--s-5);
+      border: 1px solid var(--hairline);
+      background: oklch(from var(--surface) l c h / 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      gap: var(--s-2);
+    }
+    .status-bar .pulse {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: var(--accent-2);
+      box-shadow: var(--glow-cyan);
+      border-radius: 50%;
+      margin-right: var(--s-2);
+      animation: pulse-soft 2s ease-in-out infinite;
+    }
+    .status-bar span { white-space: nowrap; }
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* ============================================================
+       HEADER META — FUI glass chips
+       ============================================================ */
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-3);
+      background: oklch(from var(--surface) l c h / 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--hairline);
+      border-radius: 0;
+      padding: var(--s-2) var(--s-3);
+      font-family: var(--font-mono);
+      font-size: var(--t-14);
+      color: var(--ink);
+      position: relative;
+    }
+    .meta-chip::before, .meta-chip::after {
+      content: "";
+      position: absolute;
+      width: 8px; height: 8px;
+      border: 1px solid var(--accent-2);
+      box-shadow: var(--glow-cyan);
+    }
+    .meta-chip::before {
+      top: -1px; left: -1px;
+      border-right: 0; border-bottom: 0;
+    }
+    .meta-chip::after {
+      bottom: -1px; right: -1px;
+      border-left: 0; border-top: 0;
+    }
+    .meta-chip label {
+      color: var(--ink-soft);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    #seletor-dia {
+      background: transparent;
+      border: 0;
+      outline: 0;
+      color: var(--accent-2);
+      font-weight: 600;
+      font-size: var(--t-14);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+      text-shadow: var(--glow-cyan);
+    }
+    #seletor-dia option { background: var(--bg-deep); color: var(--ink); }
+
+    .theme-chip {
+      display: inline-block;
+      padding: var(--s-2) var(--s-3);
+      border-radius: 0;
+      background: oklch(from var(--surface) l c h / 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--hairline);
+      font-family: var(--font-mono);
+      font-size: var(--t-14);
+      color: var(--ink);
+      font-weight: 500;
+      position: relative;
+    }
+    .theme-chip::before, .theme-chip::after {
+      content: "";
+      position: absolute;
+      width: 8px; height: 8px;
+      border: 1px solid var(--accent);
+      box-shadow: var(--glow-1);
+    }
+    .theme-chip::before {
+      top: -1px; right: -1px;
+      border-left: 0; border-bottom: 0;
+    }
+    .theme-chip::after {
+      bottom: -1px; left: -1px;
+      border-right: 0; border-top: 0;
+    }
+    .theme-chip strong {
+      color: var(--ink-soft);
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      margin-right: var(--s-2);
+    }
+    .theme-chip span:not(.theme-chip strong) {
+      color: var(--accent);
+      text-shadow: 0 0 8px oklch(from var(--accent) l c h / 0.4);
+    }
+
+
+    /* ============================================================
+       TILES — neon FUI cells
+       ============================================================ */
+    .tile {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      min-height: 64px;
+      border-radius: var(--r-md);
+      background: oklch(from var(--tile-bg) l c h / 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: var(--t-16);
+      letter-spacing: 0.04em;
+      border: 1px solid var(--hairline);
+      cursor: pointer;
+      transition:
+        background-color 180ms ease,
+        transform 120ms ease,
+        color 180ms ease,
+        border-color 200ms ease,
+        box-shadow 200ms ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      position: relative;
+      text-transform: uppercase;
+    }
+    .tile:hover {
+      background: oklch(from var(--tile-bg-hov) l c h / 0.85);
+      border-color: var(--accent-2);
+      box-shadow: 0 0 0 1px oklch(from var(--accent-2) l c h / 0.4) inset, var(--glow-cyan);
+      color: var(--accent-2);
+    }
+    .tile:active { transform: scale(0.96); }
+    .tile.is-on {
+      background: oklch(from var(--tile-on) l c h / 0.95);
+      color: var(--tile-on-ink);
+      border-color: var(--tile-on);
+      box-shadow:
+        0 0 0 1px var(--tile-on) inset,
+        var(--glow-1),
+        var(--glow-2);
+      animation: tile-pulse 2.4s ease-in-out infinite;
+    }
+    .tile.is-on:hover {
+      background: oklch(from var(--tile-on) l c h / 1);
+      color: var(--tile-on-ink);
+    }
+
+    @keyframes tile-pulse {
+      0%, 100% { box-shadow: 0 0 0 1px var(--tile-on) inset, var(--glow-1), var(--glow-2); }
+      50% { box-shadow: 0 0 0 1px var(--tile-on) inset, 0 0 32px oklch(from var(--tile-on) l c h / 0.8), 0 0 56px oklch(from var(--tile-on) l c h / 0.5); }
+    }
+
+    @media (min-width: 768px) {
+      .tile { font-size: var(--t-20); min-height: 80px; }
+    }
+
+    /* ============================================================
+       SOLVED CARDS — FUI bracket frame com glow
+       ============================================================ */
+    .solved {
+      width: 100%;
+      border-radius: var(--r-md);
+      padding: var(--s-4) var(--s-5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--cat-ink);
+      gap: var(--s-1);
+      min-height: 80px;
+      position: relative;
+      box-shadow:
+        0 0 0 1px oklch(from currentColor l c h / 0.0) inset,
+        0 0 24px oklch(from currentColor l c h / 0.45),
+        0 0 48px oklch(from currentColor l c h / 0.25);
+    }
+    .solved::before, .solved::after {
+      content: "";
+      position: absolute;
+      width: 12px; height: 12px;
+      border: 1.5px solid var(--cat-ink);
+    }
+    .solved::before {
+      top: 6px; left: 6px;
+      border-right: 0; border-bottom: 0;
+    }
+    .solved::after {
+      bottom: 6px; right: 6px;
+      border-left: 0; border-top: 0;
+    }
+    .solved .word {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-style: italic;
+      font-variation-settings: "opsz" 96, "SOFT" 80, "WONK" 1;
+      font-size: var(--t-28);
+      letter-spacing: -0.01em;
+      line-height: 1;
+    }
+    .solved .syllables {
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    /* ============================================================
+       LIVES + ACTIONS — FUI controls
+       ============================================================ */
+    .lives-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--s-3);
+      color: var(--ink-soft);
+    }
+    .life-dot {
+      width: 10px; height: 10px;
+      border-radius: 0;
+      background: var(--accent-2);
+      box-shadow: var(--glow-cyan);
+      transition: background-color 240ms ease, transform 200ms ease, box-shadow 240ms ease;
+      transform: rotate(45deg);
+    }
+    .life-dot.lost {
+      background: transparent;
+      border: 1px solid var(--hairline);
+      box-shadow: none;
+      transform: rotate(45deg) scale(0.8);
+    }
+
+    .btn {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: var(--t-14);
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      padding: var(--s-3) var(--s-5);
+      border-radius: 0;
+      cursor: pointer;
+      transition: all 200ms ease;
+      border: 1px solid var(--hairline);
+      background: oklch(from var(--surface) l c h / 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--ink);
+      min-height: 44px;
+      position: relative;
+    }
+    .btn:hover {
+      border-color: var(--accent-2);
+      color: var(--accent-2);
+      box-shadow: var(--glow-cyan);
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      color: var(--ink-soft);
+      border-color: var(--hairline);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--accent-ink);
+      border-color: var(--accent);
+      box-shadow: var(--glow-1);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hov);
+      border-color: var(--accent-hov);
+      color: var(--accent-ink);
+      box-shadow: var(--glow-1), var(--glow-2);
+    }
+    .btn-primary:disabled {
+      background: oklch(from var(--surface) l c h / 0.4);
+      color: var(--ink-soft);
+      border-color: var(--hairline);
+    }
+    .btn-accent {
+      background: var(--accent);
+      color: var(--accent-ink);
+      border-color: var(--accent);
+      box-shadow: var(--glow-1);
+    }
+    .btn-accent:hover {
+      background: var(--accent-hov);
+      border-color: var(--accent-hov);
+      color: var(--accent-ink);
+      box-shadow: var(--glow-1), var(--glow-2);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent-2);
+      outline-offset: 2px;
+      box-shadow: var(--glow-cyan);
+    }
+
+
+    /* ============================================================
+       TOAST — terminal alert
+       ============================================================ */
+    #toast {
+      visibility: hidden;
+      position: fixed;
+      left: 50%;
+      bottom: var(--s-8);
+      transform: translateX(-50%) translateY(20px);
+      background: oklch(from var(--bg) l c h / 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      color: var(--accent-2);
+      border: 1px solid var(--accent-2);
+      border-radius: 0;
+      padding: var(--s-3) var(--s-5);
+      font-family: var(--font-mono);
+      font-size: var(--t-14);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 240ms ease, transform 240ms ease;
+      z-index: 50;
+      box-shadow: var(--glow-cyan), 0 12px 40px -8px oklch(from var(--accent-2) l c h / 0.3);
+      max-width: calc(100% - var(--s-8));
+      text-align: center;
+      text-shadow: var(--glow-cyan);
+    }
+    #toast::before {
+      content: "> ";
+      opacity: 0.6;
+    }
+    #toast.show {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ============================================================
+       END SCREEN — neon victory
+       ============================================================ */
+    #emoji-grid p {
+      font-family: var(--font-mono);
+      letter-spacing: 0.22em;
+      line-height: 1.4;
+      font-size: var(--t-20);
+      margin: 0;
+      filter: saturate(1.4);
+    }
+
+    .end-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-variation-settings: "opsz" 144, "SOFT" 80, "WONK" 1;
+      font-size: var(--t-28);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      text-align: center;
+      color: var(--ink);
+      text-shadow:
+        0 0 12px oklch(from var(--accent) l c h / 0.4),
+        0 0 32px oklch(from var(--accent) l c h / 0.2);
+    }
+    .end-title.win em {
+      font-style: italic;
+      color: var(--accent);
+      text-shadow:
+        0 0 16px oklch(from var(--accent) l c h / 0.7),
+        0 0 40px oklch(from var(--accent) l c h / 0.4);
+    }
+    .end-subtitle {
+      font-family: var(--font-soft);
+      font-size: var(--t-14);
+      color: var(--ink-muted);
+      text-align: center;
+      max-width: 36ch;
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       SEASON SELECTOR — FUI core selector
+       ============================================================ */
+    .season-row {
+      margin-top: var(--s-8);
+      display: flex;
+      gap: var(--s-2);
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: stretch;
+      width: 100%;
+      max-width: 480px;
+    }
+    .season-pill {
+      flex: 1 1 calc(50% - var(--s-2));
+      min-height: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: var(--s-1);
+      padding: var(--s-3);
+      border-radius: 0;
+      background: oklch(from var(--surface) l c h / 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--hairline);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      color: var(--ink);
+      font-weight: 500;
+      font-size: var(--t-14);
+      text-align: left;
+      transition: all 240ms ease;
+      position: relative;
+    }
+    .season-pill:hover {
+      border-color: var(--accent-2);
+      box-shadow: var(--glow-cyan);
+    }
+    .season-pill:active { transform: scale(0.98); }
+    .season-pill[aria-pressed="true"] {
+      border-color: var(--accent);
+      background: oklch(from var(--surface) l c h / 0.85);
+      box-shadow: 0 0 0 1px var(--accent) inset, var(--glow-1);
+    }
+    .season-pill[aria-pressed="true"]::before,
+    .season-pill[aria-pressed="true"]::after {
+      content: "";
+      position: absolute;
+      width: 8px; height: 8px;
+      border: 1px solid var(--accent);
+      box-shadow: var(--glow-1);
+    }
+    .season-pill[aria-pressed="true"]::before {
+      top: -1px; left: -1px;
+      border-right: 0; border-bottom: 0;
+    }
+    .season-pill[aria-pressed="true"]::after {
+      bottom: -1px; right: -1px;
+      border-left: 0; border-top: 0;
+    }
+    .season-pill .season-label {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-variation-settings: "opsz" 96, "SOFT" 60;
+      font-size: var(--t-20);
+      letter-spacing: -0.01em;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .season-pill[aria-pressed="true"] .season-label {
+      font-style: italic;
+      font-variation-settings: "opsz" 96, "SOFT" 100, "WONK" 1;
+      color: var(--accent);
+      text-shadow:
+        0 0 12px oklch(from var(--accent) l c h / 0.6),
+        0 0 32px oklch(from var(--accent) l c h / 0.3);
+    }
+    .season-pill .season-eyebrow {
+      font-family: var(--font-mono);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.62rem;
+      color: var(--ink-soft);
+    }
+    .season-pill[aria-pressed="true"] .season-eyebrow {
+      color: var(--accent-2);
+      text-shadow: var(--glow-cyan);
+    }
+    .season-swatches {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      margin-top: 4px;
+    }
+    .season-swatches span {
+      width: 10px; height: 10px;
+      border-radius: 0;
+      display: inline-block;
+      box-shadow: 0 0 6px currentColor;
+    }
+
+    @media (min-width: 520px) {
+      .season-pill { flex: 1; }
+    }
+
+    /* ============================================================
+       FOOTER — system signature
+       ============================================================ */
+    .signature {
+      margin-top: var(--s-10);
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .signature strong {
+      color: var(--accent-2);
+      text-shadow: var(--glow-cyan);
+      font-weight: 500;
+    }
+    .signature::before { content: "// "; opacity: 0.5; }
+    .signature::after { content: " //"; opacity: 0.5; }
+
+    /* ============================================================
+       MOTION — shake + bounce + reduced-motion
+       ============================================================ */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+    .shake { animation: shake 360ms ease-in-out; }
+
+    @keyframes bounceIn {
+      0%   { transform: translateY(8px); opacity: 0; }
+      60%  { transform: translateY(-3px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .bounce-in { animation: bounceIn 420ms cubic-bezier(.2,.7,.3,1.2); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+
+    /* utility */
+    .hidden { display: none !important; }
+  </style>
 </head>
-<body class="flex flex-col items-center min-h-screen pt-8 pb-12 px-4">
 
-    <div id="toast">Mensagem</div>
 
-    <header class="w-full max-w-md text-center mb-6">
-        <h1 class="text-4xl font-extrabold tracking-tight mb-2">Silaba Aspenexo</h1>
-        <p class="text-gray-600 text-sm font-medium mb-3">Forme 4 palavras juntando 4 sílabas cada.</p>
-        
-        <!-- Indicador do Dia e Tema -->
-        <div class="flex flex-col items-center gap-2">
-            
-            <!-- Novo Seletor de Dias Anteriores -->
-            <div class="flex items-center bg-gray-100 rounded-full px-4 py-1.5 border border-gray-300">
-                <label for="seletor-dia" class="text-sm font-bold mr-2">Abril 2026:</label>
-                <select id="seletor-dia" class="bg-transparent text-sm font-bold outline-none cursor-pointer text-indigo-700">
-                    <!-- Opções geradas via JS -->
-                </select>
-            </div>
+<body>
+  <div id="toast" role="status" aria-live="polite">Mensagem</div>
 
-            <div class="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-800 rounded-full font-bold border border-indigo-200 shadow-sm transition-all text-sm" id="tema-display">
-                Tema: Carregando...
-            </div>
-        </div>
-    </header>
+  <div class="status-bar" role="status" aria-label="Status do sistema">
+    <span><span class="pulse"></span>SYS_ONLINE</span>
+    <span class="caps-accent" id="status-day">DAY_<span id="status-day-num">--</span></span>
+    <span id="status-mode">PINK_NOISE</span>
+  </div>
 
-    <main class="w-full max-w-md flex flex-col items-center">
-        
-        <div id="solved-container" class="w-full flex flex-col gap-2 mb-2"></div>
+  <header class="w-full max-w-md text-center" style="margin-bottom: var(--s-8);">
+    <p class="caps" style="margin-bottom: var(--s-3);">[ Pt-BR · Diário · MAIO 2026 ]</p>
+    <h1 class="display" style="font-size: clamp(2.25rem, 8vw, 3rem); margin: 0 0 var(--s-3);">
+      Sílaba <em>Aspenexo</em>
+    </h1>
+    <p class="lede" style="margin: 0 auto var(--s-5); max-width: 32ch;">
+      Forme 4 palavras juntando 4 sílabas cada.
+    </p>
 
-        <div id="grid" class="grid grid-cols-4 gap-2 w-full mb-6">
-            <!-- Botões injetados via JS -->
-        </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: var(--s-2);">
+      <div class="meta-chip">
+        <label for="seletor-dia">Maio 2026</label>
+        <select id="seletor-dia" aria-label="Selecionar dia"></select>
+      </div>
+      <div class="theme-chip" id="tema-display">
+        <strong>Tema</strong><span>Carregando…</span>
+      </div>
+    </div>
+  </header>
 
-        <div id="lives-container" class="flex items-center justify-center mb-6 hidden-on-win">
-            <span class="mr-3 text-sm font-semibold text-gray-700">Chances:</span>
-            <div id="lives" class="flex">
-                <span class="life-dot"></span>
-                <span class="life-dot"></span>
-                <span class="life-dot"></span>
-                <span class="life-dot"></span>
-            </div>
-        </div>
+  <main class="w-full max-w-md flex flex-col items-center">
 
-        <div id="action-buttons" class="flex gap-3 hidden-on-win">
-            <button id="btn-shuffle" class="px-5 py-3 rounded-full border-2 border-gray-300 font-bold text-gray-700 hover:bg-gray-100 transition-colors">
-                Embaralhar
-            </button>
-            <button id="btn-deselect" class="px-5 py-3 rounded-full border-2 border-gray-300 font-bold text-gray-700 hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                Desmarcar
-            </button>
-            <button id="btn-submit" class="px-5 py-3 rounded-full border-2 border-black bg-black text-white font-bold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-white disabled:text-gray-400" disabled>
-                Testar
-            </button>
-        </div>
+    <div id="solved-container" class="w-full flex flex-col" style="gap: var(--s-2); margin-bottom: var(--s-2);"></div>
 
-        <!-- Tela de Fim de Jogo Diário -->
-        <div id="end-screen" class="hidden flex-col items-center mt-6 w-full">
-            <h2 id="end-title" class="text-2xl font-bold mb-2"></h2>
-            <p id="end-subtitle" class="text-gray-600 mb-4"></p>
-            
-            <!-- Resumo das tentativas (Emojis) -->
-            <div id="emoji-grid" class="flex flex-col gap-1 mb-6 text-2xl tracking-[0.2em]">
-                <!-- Emojis gerados aqui -->
-            </div>
+    <div id="grid" class="grid grid-cols-4 w-full" style="gap: var(--s-2); margin-bottom: var(--s-6);"></div>
 
-            <button id="btn-share" class="w-full px-6 py-4 bg-indigo-600 text-white rounded-full font-extrabold hover:bg-indigo-700 transition shadow-lg flex justify-center items-center gap-2 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                Compartilhar Resultado
-            </button>
-            <p class="text-xs text-gray-400 mt-2 text-center">Selecione outro dia no menu superior para continuar jogando!</p>
-        </div>
-    </main>
+    <div id="lives-container" class="lives-row hidden-on-win" style="margin-bottom: var(--s-6);">
+      <span class="caps">Chances</span>
+      <div id="lives" style="display: inline-flex; gap: var(--s-2); align-items: center;">
+        <span class="life-dot"></span>
+        <span class="life-dot"></span>
+        <span class="life-dot"></span>
+        <span class="life-dot"></span>
+      </div>
+    </div>
 
-    <script>
-        const CORES = ["#fcc822", "#a0c35a", "#bce3fe", "#ba81c5"];
-        const EMOJIS = ["🟨", "🟩", "🟦", "🟪"];
+    <div id="action-buttons" class="hidden-on-win" style="display: flex; gap: var(--s-3); flex-wrap: wrap; justify-content: center;">
+      <button id="btn-shuffle" class="btn">Embaralhar</button>
+      <button id="btn-deselect" class="btn" disabled>Desmarcar</button>
+      <button id="btn-submit" class="btn btn-primary" disabled>Testar</button>
+    </div>
 
-        // Exatamente 30 fases (Mês de Abril 2026)
-        const BANCO_DE_FASES = [
-            { // Dia 1
-                tema: "Ofensas",
-                palavras: [
-                    { palavra: "VAGABUNDO", silabas: ["VA", "GA", "BUN", "DO"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "MISERÁVEL", silabas: ["MI", "SE", "RÁ", "VEL"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "IGNORANTE", silabas: ["IG", "NO", "RAN", "TE"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "IDIOTA", silabas: ["I", "DI", "O", "TA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 2
-                tema: "Personagens de Desenho",
-                palavras: [
-                    { palavra: "CEBOLINHA", silabas: ["CE", "BO", "LI", "NHA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "PATOLINO", silabas: ["PA", "TO", "LI", "NO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "MICKEY MOUSE", silabas: ["MI", "CKEY", "MOU", "SE"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "BOB ESPONJA", silabas: ["BO", "BES", "PON", "JA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 3
-                tema: "Adjetivos",
-                palavras: [
-                    { palavra: "FASCINANTE", silabas: ["FAS", "CI", "NAN", "TE"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "CORAJOSO", silabas: ["CO", "RA", "JO", "SO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "BELÍSSIMO", silabas: ["BE", "LÍS", "SI", "MO"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "ENCANTADOR", silabas: ["EN", "CAN", "TA", "DOR"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 4
-                tema: "Meios de Transporte",
-                palavras: [
-                    { palavra: "BICICLETA", silabas: ["BI", "CI", "CLE", "TA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "SUBMARINO", silabas: ["SUB", "MA", "RI", "NO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "CAMIONETE", silabas: ["CA", "MIO", "NE", "TE"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "PATINETE", silabas: ["PA", "TI", "NE", "TE"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 5
-                tema: "Animais",
-                palavras: [
-                    { palavra: "TARTARUGA", silabas: ["TAR", "TA", "RU", "GA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "CAPIVARA", silabas: ["CA", "PI", "VA", "RA"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "GAFANHOTO", silabas: ["GA", "FA", "NHO", "TO"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "CAMALEÃO", silabas: ["CA", "MA", "LE", "ÃO"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 6
-                tema: "Lojas de Shopping",
-                palavras: [
-                    { palavra: "LANCHONETE", silabas: ["LAN", "CHO", "NE", "TE"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "PAPELARIA", silabas: ["PA", "PE", "LA", "RIA"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "SORVETERIA", silabas: ["SOR", "VE", "TE", "RIA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "BRINQUEDARIA", silabas: ["BRIN", "QUE", "DA", "RIA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 7
-                tema: "Ações no Futebol",
-                palavras: [
-                    { palavra: "CRUZAMENTO", silabas: ["CRU", "ZA", "MEN", "TO"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "ESCANTEIO", silabas: ["ES", "CAN", "TEI", "O"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "CABECEIO", silabas: ["CA", "BE", "CEI", "O"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "BICICLETA", silabas: ["BI", "CI", "CLE", "TA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 8
-                tema: "Profissões",
-                palavras: [
-                    { palavra: "ENGENHEIRO", silabas: ["EN", "GE", "NHEI", "RO"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "CARPINTEIRO", silabas: ["CAR", "PIN", "TEI", "RO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "COZINHEIRO", silabas: ["CO", "ZI", "NHEI", "RO"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "MAQUINISTA", silabas: ["MA", "QUI", "NIS", "TA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 9
-                tema: "Frutas",
-                palavras: [
-                    { palavra: "ABACATE", silabas: ["A", "BA", "CA", "TE"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "MELANCIA", silabas: ["ME", "LAN", "CI", "A"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "CARAMBOLA", silabas: ["CA", "RAM", "BO", "LA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "TANGERINA", silabas: ["TAN", "GE", "RI", "NA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 10
-                tema: "Instrumentos Musicais",
-                palavras: [
-                    { palavra: "XILOFONE", silabas: ["XI", "LO", "FO", "NE"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "CAVAQUINHO", silabas: ["CA", "VA", "QUI", "NHO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "CASTANHOLA", silabas: ["CAS", "TA", "NHO", "LA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "ACORDEÃO", silabas: ["A", "COR", "DE", "ÃO"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 11
-                tema: "Países",
-                palavras: [
-                    { palavra: "INGLATERRA", silabas: ["IN", "GLA", "TER", "RA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "ARGENTINA", silabas: ["AR", "GEN", "TI", "NA"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "VENEZUELA", silabas: ["VE", "NE", "ZUE", "LA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "INDONÉSIA", silabas: ["IN", "DO", "NÉ", "SIA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 12
-                tema: "Cores e Tons",
-                palavras: [
-                    { palavra: "AMARELO", silabas: ["A", "MA", "RE", "LO"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "VIOLETA", silabas: ["VI", "O", "LE", "TA"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "ESMERALDA", silabas: ["ES", "ME", "RAL", "DA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "AMARANTO", silabas: ["A", "MA", "RAN", "TO"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 13
-                tema: "Corpo Humano",
-                palavras: [
-                    { palavra: "COTOVELO", silabas: ["CO", "TO", "VE", "LO"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "ANTEBRAÇO", silabas: ["AN", "TE", "BRA", "ÇO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "PANTURRILHA", silabas: ["PAN", "TUR", "RI", "LHA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "SOBRANCELHA", silabas: ["SO", "BRAN", "CE", "LHA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 14
-                tema: "Vestuário",
-                palavras: [
-                    { palavra: "CAMISETA", silabas: ["CA", "MI", "SE", "TA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "SAPATILHA", silabas: ["SA", "PA", "TI", "LHA"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "CALÇONETE", silabas: ["CAL", "ÇO", "NE", "TE"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "SUSPENSÓRIO", silabas: ["SUS", "PEN", "SÓ", "RIO"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 15
-                tema: "Doces Clássicos",
-                palavras: [
-                    { palavra: "BRIGADEIRO", silabas: ["BRI", "GA", "DEI", "RO"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "GELATINA", silabas: ["GE", "LA", "TI", "NA"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "CHOCOLATE", silabas: ["CHO", "CO", "LA", "TE"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "MARMELADA", silabas: ["MAR", "ME", "LA", "DA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 16
-                tema: "Forças da Natureza",
-                palavras: [
-                    { palavra: "TEMPESTADE", silabas: ["TEM", "PES", "TA", "DE"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "PRIMAVERA", silabas: ["PRI", "MA", "VE", "RA"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "CACHOEIRA", silabas: ["CA", "CHO", "EI", "RA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "AVALANCHE", silabas: ["A", "VA", "LAN", "CHE"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 17
-                tema: "Na Cozinha",
-                palavras: [
-                    { palavra: "GELADEIRA", silabas: ["GE", "LA", "DEI", "RA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "FRIGIDEIRA", silabas: ["FRI", "GI", "DEI", "RA"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "ASSADEIRA", silabas: ["AS", "SA", "DEI", "RA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "CAFETEIRA", silabas: ["CA", "FE", "TEI", "RA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 18
-                tema: "Sentimentos",
-                palavras: [
-                    { palavra: "ALEGRIA", silabas: ["A", "LE", "GRI", "A"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "ESPERANÇA", silabas: ["ES", "PE", "RAN", "ÇA"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "ANSIEDADE", silabas: ["AN", "SIE", "DA", "DE"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "OTIMISMO", silabas: ["O", "TI", "MIS", "MO"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 19
-                tema: "Esportes Olímpicos",
-                palavras: [
-                    { palavra: "BASQUETEBOL", silabas: ["BAS", "QUE", "TE", "BOL"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "ALPINISMO", silabas: ["AL", "PI", "NIS", "MO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "GINÁSTICA", silabas: ["GI", "NÁS", "TI", "CA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "ATLETISMO", silabas: ["A", "TLE", "TIS", "MO"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 20
-                tema: "Insetos e Aracnídeos",
-                palavras: [
-                    { palavra: "JOANINHA", silabas: ["JO", "A", "NI", "NHA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "CENTOPEIA", silabas: ["CEN", "TO", "PEI", "A"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "ESCORPIÃO", silabas: ["ES", "COR", "PI", "ÃO"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "MARIPOSA", silabas: ["MA", "RI", "PO", "SA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 21
-                tema: "Informática",
-                palavras: [
-                    { palavra: "IMPRESSORA", silabas: ["IM", "PRES", "SO", "RA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "NAVEGADOR", silabas: ["NA", "VE", "GA", "DOR"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "DIGITAÇÃO", silabas: ["DI", "GI", "TA", "ÇÃO"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "MICROFONE", silabas: ["MI", "CRO", "FO", "NE"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 22
-                tema: "Material Escolar",
-                palavras: [
-                    { palavra: "LAPISEIRA", silabas: ["LA", "PI", "SEI", "RA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "APONTADOR", silabas: ["A", "PON", "TA", "DOR"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "ETIQUETA", silabas: ["E", "TI", "QUE", "TA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "CADERNINHO", silabas: ["CA", "DER", "NI", "NHO"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 23
-                tema: "Astronomia",
-                palavras: [
-                    { palavra: "NEBULOSA", silabas: ["NE", "BU", "LO", "SA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "ASTEROIDE", silabas: ["AS", "TE", "ROI", "DE"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "METEORO", silabas: ["ME", "TE", "O", "RO"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "TELESCÓPIO", silabas: ["TE", "LES", "CÓ", "PIO"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 24
-                tema: "Aves",
-                palavras: [
-                    { palavra: "PAPAGAIO", silabas: ["PA", "PA", "GAI", "O"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "CORUJINHA", silabas: ["CO", "RU", "JI", "NHA"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "PELICANO", silabas: ["PE", "LI", "CA", "NO"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "ANDORINHA", silabas: ["AN", "DO", "RI", "NHA"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 25
-                tema: "Química",
-                palavras: [
-                    { palavra: "OXIGÊNIO", silabas: ["O", "XI", "GÊ", "NIO"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "CARBONATO", silabas: ["CAR", "BO", "NA", "TO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "ALUMÍNIO", silabas: ["A", "LU", "MÍ", "NIO"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "MAGNÉSIO", silabas: ["MAG", "NÉ", "SI", "O"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 26
-                tema: "Plantas e Flores",
-                palavras: [
-                    { palavra: "MARGARIDA", silabas: ["MAR", "GA", "RI", "DA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "ORQUÍDEA", silabas: ["OR", "QUÍ", "DE", "A"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "CARNÍVORA", silabas: ["CAR", "NÍ", "VO", "RA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "SAMAMBAIA", silabas: ["SA", "MAM", "BAI", "A"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 27
-                tema: "Transporte Público",
-                palavras: [
-                    { palavra: "MOTORISTA", silabas: ["MO", "TO", "RIS", "TA"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "PASSAGEIRO", silabas: ["PAS", "SA", "GEI", "RO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "COBRADORES", silabas: ["CO", "BRA", "DO", "RES"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "RODOVIA", silabas: ["RO", "DO", "VI", "A"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 28
-                tema: "Gêneros Musicais",
-                palavras: [
-                    { palavra: "SERTANEJO", silabas: ["SER", "TA", "NE", "JO"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "PAGODEIRO", silabas: ["PA", "GO", "DEI", "RO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "BOSSANOVA", silabas: ["BOS", "SA", "NO", "VA"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "MARACATU", silabas: ["MA", "RA", "CA", "TU"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 29
-                tema: "Dinossauros",
-                palavras: [
-                    { palavra: "DINOSSAURO", silabas: ["DI", "NOS", "SAU", "RO"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "HERBÍVORO", silabas: ["HER", "BÍ", "VO", "RO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "CARNÍVORO", silabas: ["CAR", "NÍ", "VO", "RO"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "ESCAVAÇÃO", silabas: ["ES", "CA", "VA", "ÇÃO"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            },
-            { // Dia 30
-                tema: "Mundo da Magia",
-                palavras: [
-                    { palavra: "LOBISOMEM", silabas: ["LO", "BI", "SO", "MEM"], cor: CORES[0], emoji: EMOJIS[0] },
-                    { palavra: "VAMPIRISMO", silabas: ["VAM", "PI", "RIS", "MO"], cor: CORES[1], emoji: EMOJIS[1] },
-                    { palavra: "ENCANTADO", silabas: ["EN", "CAN", "TA", "DO"], cor: CORES[2], emoji: EMOJIS[2] },
-                    { palavra: "FEITICEIRO", silabas: ["FEI", "TI", "CEI", "RO"], cor: CORES[3], emoji: EMOJIS[3] }
-                ]
-            }
-        ];
+    <div id="end-screen" class="hidden" style="flex-direction: column; align-items: center; width: 100%; margin-top: var(--s-6); gap: var(--s-4);">
+      <h2 id="end-title" class="end-title"></h2>
+      <p id="end-subtitle" class="end-subtitle"></p>
+      <div id="emoji-grid" style="display: flex; flex-direction: column; gap: var(--s-1); margin: var(--s-4) 0;"></div>
+      <button id="btn-share" class="btn btn-accent" style="width: 100%; padding: var(--s-4) var(--s-5);" aria-label="Compartilhar resultado">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px; margin-right: 8px;"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+        Compartilhar resultado
+      </button>
+      <p class="caps" style="color: var(--ink-soft); text-align: center;">Selecione outro dia no menu superior</p>
+    </div>
+  </main>
 
-        // --- SISTEMA DE DATAS (Abril 2026) ---
-        // Vamos considerar 1 de Abril de 2026 como o dia 1.
-        const DATA_LANCAMENTO = new Date(2026, 2, 31); // 31 de Março 2026 (Para o dia 1 de Abril contar como 1)
-        const hoje = new Date();
-        hoje.setHours(0,0,0,0);
-        
-        let diferencaDias = Math.floor((hoje.getTime() - DATA_LANCAMENTO.getTime()) / (1000 * 60 * 60 * 24));
-        
-        // Garante que o usuário só veja do dia 1 até o dia atual (ou no máximo até o dia 30, já que Abril tem 30 dias).
-        let diaAtualMaximo = diferencaDias > 0 ? diferencaDias : 1;
-        if (diaAtualMaximo > 30) diaAtualMaximo = 30; // Trava no dia 30 se passarmos de Abril
+  <section class="season-row" role="group" aria-label="Selecionar core de cor">
+    <button class="season-pill" type="button" data-season="primavera" aria-pressed="true">
+      <span class="season-eyebrow">CORE_01 · MAR–MAI</span>
+      <span class="season-label">Primavera</span>
+      <span class="season-swatches" aria-hidden="true">
+        <span style="background: oklch(80% 0.22 70); color: oklch(80% 0.22 70)"></span>
+        <span style="background: oklch(75% 0.27 145); color: oklch(75% 0.27 145)"></span>
+        <span style="background: oklch(78% 0.20 215); color: oklch(78% 0.20 215)"></span>
+        <span style="background: oklch(70% 0.30 320); color: oklch(70% 0.30 320)"></span>
+      </span>
+    </button>
+    <button class="season-pill" type="button" data-season="verao" aria-pressed="false">
+      <span class="season-eyebrow">CORE_02 · JUN–AGO</span>
+      <span class="season-label">Verão</span>
+      <span class="season-swatches" aria-hidden="true">
+        <span style="background: oklch(82% 0.22 90); color: oklch(82% 0.22 90)"></span>
+        <span style="background: oklch(75% 0.27 165); color: oklch(75% 0.27 165)"></span>
+        <span style="background: oklch(78% 0.22 220); color: oklch(78% 0.22 220)"></span>
+        <span style="background: oklch(72% 0.28 30); color: oklch(72% 0.28 30)"></span>
+      </span>
+    </button>
+    <button class="season-pill" type="button" data-season="outono" aria-pressed="false">
+      <span class="season-eyebrow">CORE_03 · SET–NOV</span>
+      <span class="season-label">Outono</span>
+      <span class="season-swatches" aria-hidden="true">
+        <span style="background: oklch(75% 0.25 60); color: oklch(75% 0.25 60)"></span>
+        <span style="background: oklch(78% 0.22 90); color: oklch(78% 0.22 90)"></span>
+        <span style="background: oklch(70% 0.27 25); color: oklch(70% 0.27 25)"></span>
+        <span style="background: oklch(60% 0.22 350); color: oklch(60% 0.22 350)"></span>
+      </span>
+    </button>
+    <button class="season-pill" type="button" data-season="inverno" aria-pressed="false">
+      <span class="season-eyebrow">CORE_04 · DEZ–FEV</span>
+      <span class="season-label">Inverno</span>
+      <span class="season-swatches" aria-hidden="true">
+        <span style="background: oklch(82% 0.15 200); color: oklch(82% 0.15 200)"></span>
+        <span style="background: oklch(75% 0.20 240); color: oklch(75% 0.20 240)"></span>
+        <span style="background: oklch(78% 0.20 290); color: oklch(78% 0.20 290)"></span>
+        <span style="background: oklch(80% 0.15 160); color: oklch(80% 0.15 160)"></span>
+      </span>
+    </button>
+  </section>
 
-        // --- ESTADO DO JOGO ---
-        let numeroDoDiaSelecionado = diaAtualMaximo; // O dia que ele está jogando agora
-        let faseAtualDados = [];
-        let tilesAtivos = [];
-        let tilesSelecionados = [];
-        let categoriasResolvidas = [];
-        let historicoTentativas = [];
-        let vidas = 4;
-        let jogoFinalizado = false;
-        let vitoria = false;
+  <footer class="signature">
+    Re-engineered by <strong>EGO_DESIGN_STUDIO</strong> · v05_MAIO · 2026-05-04
+  </footer>
 
-        // --- ELEMENTOS DA DOM ---
-        const gridEl = document.getElementById('grid');
-        const solvedContainerEl = document.getElementById('solved-container');
-        const livesEl = document.getElementById('lives');
-        const seletorDiaEl = document.getElementById('seletor-dia');
-        const temaDisplayEl = document.getElementById('tema-display');
-        const btnShuffle = document.getElementById('btn-shuffle');
-        const btnDeselect = document.getElementById('btn-deselect');
-        const btnSubmit = document.getElementById('btn-submit');
-        const toastEl = document.getElementById('toast');
-        const endScreenEl = document.getElementById('end-screen');
-        const endTitleEl = document.getElementById('end-title');
-        const endSubtitleEl = document.getElementById('end-subtitle');
-        const emojiGridEl = document.getElementById('emoji-grid');
-        const btnShare = document.getElementById('btn-share');
-        const hiddenOnWinEls = document.querySelectorAll('.hidden-on-win');
 
-        // --- INICIALIZAÇÃO GERAL ---
-        function carregarOpcoesDeDias() {
-            seletorDiaEl.innerHTML = "";
-            for (let i = 1; i <= diaAtualMaximo; i++) {
-                let option = document.createElement("option");
-                option.value = i;
-                option.text = `Dia ${i}`;
-                if (i === numeroDoDiaSelecionado) {
-                    option.selected = true;
-                }
-                seletorDiaEl.appendChild(option);
-            }
-            
-            // Evento para mudar de dia
-            seletorDiaEl.addEventListener('change', (e) => {
-                numeroDoDiaSelecionado = parseInt(e.target.value);
-                inicializarJogoParaDia();
-            });
-        }
+<script>
+  // ============================================================
+  // BANCO DE FASES — preservado intacto do v01 (30 dias).
+  // Cores referenciam CSS variables OKLCH em vez de hex bare.
+  // ============================================================
+  const CORES = ["var(--cat-1)", "var(--cat-2)", "var(--cat-3)", "var(--cat-4)"];
+  const EMOJIS = ["🟨", "🟩", "🟦", "🟪"];
 
-        function inicializarJogoParaDia() {
-            // Ocultar telas finais ao recarregar um dia
-            hiddenOnWinEls.forEach(el => el.style.display = 'flex');
-            endScreenEl.classList.add('hidden');
-            endScreenEl.style.display = 'none';
+  const BANCO_DE_FASES = [
+    { tema: "Animes Clássicos", palavras: [
+      { palavra: "INUYASHA", silabas: ["I","NU","YA","SHA"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "SAILORMOON", silabas: ["SAI","LOR","MO","ON"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "AKATSUKI", silabas: ["A","KA","TSU","KI"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "SHINIGAMI", silabas: ["SHI","NI","GA","MI"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Marcas Brasileiras", palavras: [
+      { palavra: "HAVAIANAS", silabas: ["HA","VA","IA","NAS"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "MAGAZINE", silabas: ["MA","GA","ZI","NE"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "LOCALIZA", silabas: ["LO","CA","LI","ZA"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "HABIBSCHIK", silabas: ["HA","BIBS","CHI","CK"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Xingamentos Roça", palavras: [
+      { palavra: "SAFADENHO", silabas: ["SA","FA","DE","NHO"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "PERIQUITO", silabas: ["PE","RI","QUI","TO"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "NOVELEIRO", silabas: ["NO","VE","LEI","RO"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "PANDEMONIO", silabas: ["PAN","DE","MO","NIO"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Heróis Nerd", palavras: [
+      { palavra: "DAREDEVIL", silabas: ["DA","RE","DE","VIL"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "WOLVERINE", silabas: ["WOL","VE","RI","NE"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "HOMARANHA", silabas: ["HO","MA","RA","NHA"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "MISTERIOSO", silabas: ["MIS","TE","RI","OSO"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Minha Sogra É...", palavras: [
+      { palavra: "MEXERICA", silabas: ["ME","XE","RI","CA"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "LINGUARUDA", silabas: ["LIN","GUA","RU","DA"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "METIDONA", silabas: ["ME","TI","DO","NA"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "ENCRENQUEIRA", silabas: ["EN","CREN","QUEI","RA"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Desculpa pra Faltar Aula", palavras: [
+      { palavra: "INFLUENZA", silabas: ["IN","FLU","EN","ZA"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "MENINGITE", silabas: ["ME","NIN","GI","TE"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "SARAMPINHA", silabas: ["SA","RAM","PI","NHA"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "TENDINITE", silabas: ["TEN","DI","NI","TE"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Pokémons 4-síl", palavras: [
+      { palavra: "DRAGONITE", silabas: ["DRA","GO","NI","TE"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "VAPOREON", silabas: ["VA","PO","RE","ON"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "ARCANINE", silabas: ["AR","CA","NI","NE"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "NINETALES", silabas: ["NI","NE","TA","LES"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Filmes Cabeça", palavras: [
+      { palavra: "INCEPTION", silabas: ["IN","CEP","TI","ON"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "INTERSTELLAR", silabas: ["IN","TER","STEL","LAR"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "MEMENTOSO", silabas: ["ME","MEN","TO","SO"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "MULHOLLAND", silabas: ["MUL","HOL","LAN","D"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Apelidos de Cama", palavras: [
+      { palavra: "GOSTOSURA", silabas: ["GOS","TO","SU","RA"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "LINDEZINHA", silabas: ["LIN","DE","ZI","NHA"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "CHEIROSINHA", silabas: ["CHEI","RO","SI","NHA"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "PRINCEZINHA", silabas: ["PRIN","CE","ZI","NHA"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Bandas BR", palavras: [
+      { palavra: "PARALAMAS", silabas: ["PA","RA","LA","MAS"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "LOSHERMANOS", silabas: ["LOS","HER","MA","NOS"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "SEPULTURA", silabas: ["SE","PUL","TU","RA"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "CHARLIEBROWN", silabas: ["CHAR","LIE","BRO","WN"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Sériesneflix", palavras: [
+      { palavra: "SQUIDGAME", silabas: ["SQU","ID","GA","ME"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "WANDINHA", silabas: ["WAN","DI","NHA","Z"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "STRANGERTHINGS", silabas: ["STRAN","GER","THIN","GS"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "MINDHUNTER", silabas: ["MIND","HUN","TE","R"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Game of Thrones", palavras: [
+      { palavra: "KHALEESI", silabas: ["KHA","LE","E","SI"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "WINTERFELL", silabas: ["WIN","TER","FE","LL"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "TARGARYEN", silabas: ["TAR","GA","RY","EN"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "LANNISTER", silabas: ["LAN","NIS","TE","R"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Cantadas Cafonas", palavras: [
+      { palavra: "BANANINHA", silabas: ["BA","NA","NI","NHA"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "ANJINHODEUS", silabas: ["AN","JI","NHO","DEUS"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "GATAFINA", silabas: ["GA","TA","FI","NA"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "DOCURINHA", silabas: ["DO","CU","RI","NHA"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "BBB Frases", palavras: [
+      { palavra: "CONSPIRA", silabas: ["CONS","PI","RA","Z"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "MIMIMINHO", silabas: ["MI","MI","MI","NHO"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "FAKENEWS", silabas: ["FA","KE","NE","WS"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "PAREDÃO", silabas: ["PA","RE","DÃ","O"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Mortal Kombat", palavras: [
+      { palavra: "SUBZERO", silabas: ["SUB","ZE","RO","Z"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "SCORPION", silabas: ["SCOR","PI","O","N"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "LIUKANG", silabas: ["LI","U","KA","NG"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "RAIDENZIN", silabas: ["RAI","DEN","ZI","N"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Drogas Eufemismo", palavras: [
+      { palavra: "BAGULHINHO", silabas: ["BA","GU","LHI","NHO"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "BARANGO", silabas: ["BA","RAN","GO","Z"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "PACOTAÇO", silabas: ["PA","CO","TA","ÇO"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "CACHORRADA", silabas: ["CA","CHOR","RA","DA"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Boteco BR", palavras: [
+      { palavra: "CACHACINHA", silabas: ["CA","CHA","CI","NHA"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "PETISQUEIRA", silabas: ["PE","TIS","QUEI","RA"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "SALGADINHO", silabas: ["SAL","GA","DI","NHO"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "CERVEJADA", silabas: ["CER","VE","JA","DA"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Memes Internet", palavras: [
+      { palavra: "CARALEO", silabas: ["CA","RA","LE","O"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "SUSSUMU", silabas: ["SUS","SU","MU","Z"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "CABULOSO", silabas: ["CA","BU","LO","SO"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "VIDALOUCA", silabas: ["VI","DA","LOU","CA"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Crush Indireto", palavras: [
+      { palavra: "STORYINDIRETA", silabas: ["STO","RY","IN","DI"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "RECADINHO", silabas: ["RE","CA","DI","NHO"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "OLHADINHA", silabas: ["O","LHA","DI","NHA"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "PISCADELA", silabas: ["PIS","CA","DE","LA"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Mil Grau", palavras: [
+      { palavra: "SARRADINHO", silabas: ["SAR","RA","DI","NHO"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "DESCABELADO", silabas: ["DES","CA","BE","LA"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "TROVOADA", silabas: ["TRO","VO","A","DA"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "ARROCHADO", silabas: ["AR","RO","CHA","DO"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Mascotes BR", palavras: [
+      { palavra: "MAGALU", silabas: ["MA","GA","LU","Z"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "BIDU", silabas: ["BI","DU","UU","Z"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "TIGRINHO", silabas: ["TI","GRI","NHO","Z"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "CARIOCA", silabas: ["CA","RI","O","CA"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Boletim Mãe", palavras: [
+      { palavra: "RECUPERA", silabas: ["RE","CU","PE","RA"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "REPROVADO", silabas: ["RE","PRO","VA","DO"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "CHAMADINHA", silabas: ["CHA","MA","DI","NHA"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "DECONESELO", silabas: ["DE","CO","NE","SE"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Star Wars", palavras: [
+      { palavra: "SKYWALKER", silabas: ["SKY","WAL","KE","R"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "DARTHVADER", silabas: ["DAR","TH","VA","DER"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "CHEWBACCA", silabas: ["CHEW","BA","CCA","Z"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "YODAINHA", silabas: ["YO","DA","I","NHA"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Frases de Mãe", palavras: [
+      { palavra: "CALABOCA", silabas: ["CA","LA","BO","CA"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "DINHEIRINHO", silabas: ["DI","NHEI","RI","NHO"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "APANHARÁS", silabas: ["A","PA","NHA","RÁS"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "VAINOCANTO", silabas: ["VAI","NO","CAN","TO"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Funk Carioca", palavras: [
+      { palavra: "PIRANHADA", silabas: ["PI","RA","NHA","DA"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "BAILADELO", silabas: ["BAI","LA","DE","LO"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "RABODESEDA", silabas: ["RA","BO","DE","SE"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "MONTADINHO", silabas: ["MON","TA","DI","NHO"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Vingadores", palavras: [
+      { palavra: "CAPMERICA", silabas: ["CAP","ME","RI","CA"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "HOMEMFORMIGA", silabas: ["HO","MEM","FOR","MI"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "VIUVANEGRA", silabas: ["VI","U","VA","NE"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "DOUTORESTRANHO", silabas: ["DOU","TOR","ES","TRAN"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Game Vintage", palavras: [
+      { palavra: "ATARI2600", silabas: ["A","TA","RI","2600"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "MEGADRIVE", silabas: ["ME","GA","DRI","VE"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "DREAMCAST", silabas: ["DRE","AM","CAS","T"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "NINTENDO64", silabas: ["NIN","TEN","DO","64"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Gírias Carioca", palavras: [
+      { palavra: "MANEIRO", silabas: ["MA","NEI","RO","Z"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "CACETADO", silabas: ["CA","CE","TA","DO"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "MARMELADA", silabas: ["MAR","ME","LA","DA"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "CARETICE", silabas: ["CA","RE","TI","CE"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Programa Domingão", palavras: [
+      { palavra: "FAUSTÃOZÃO", silabas: ["FAUS","TÃO","ZÃ","O"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "DOMINGÃOZÃO", silabas: ["DO","MIN","GÃO","ZÃO"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "CALDEIRÃO", silabas: ["CAL","DEI","RÃ","O"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "BAILEDOFAUS", silabas: ["BAI","LE","DO","FAUS"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]},
+    { tema: "Mochilada Tóquio", palavras: [
+      { palavra: "AKIHABARA", silabas: ["A","KI","HA","BA"], cor: CORES[0], emoji: EMOJIS[0] },
+      { palavra: "HARAJUKU", silabas: ["HA","RA","JU","KU"], cor: CORES[1], emoji: EMOJIS[1] },
+      { palavra: "ROPPONGI", silabas: ["RO","PPON","GI","Z"], cor: CORES[2], emoji: EMOJIS[2] },
+      { palavra: "ASAKUSA", silabas: ["A","SA","KU","SA"], cor: CORES[3], emoji: EMOJIS[3] }
+    ]}
+  ];
+</script>
 
-            // Pega os dados do dia no array (índice começa em 0, por isso o -1)
-            faseAtualDados = BANCO_DE_FASES[numeroDoDiaSelecionado - 1].palavras;
-            temaDisplayEl.textContent = `Tema: ${BANCO_DE_FASES[numeroDoDiaSelecionado - 1].tema}`;
-            
-            // Puxa do LocalStorage um banco de dados unificado
-            let dbSalvo = JSON.parse(localStorage.getItem('silabaConexa_MultiDias')) || {};
-            let estadoDoDia = dbSalvo[numeroDoDiaSelecionado];
 
-            tilesSelecionados = [];
+<script>
+  // ============================================================
+  // SISTEMA DE DATAS — preservado do v01
+  // ============================================================
+  const DATA_LANCAMENTO = new Date(2026, 3, 30); // 30 abr → dia 1 = 1 mai
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+  let diferencaDias = Math.floor((hoje.getTime() - DATA_LANCAMENTO.getTime()) / (1000 * 60 * 60 * 24));
+  // Modo "amigos / GitHub Pages": todos os 30 dias liberados de uma vez.
+  // (Pra voltar ao modo NYT-style 1-por-dia, troque pra: diferencaDias > 0 ? Math.min(diferencaDias, 30) : 1)
+  let diaAtualMaximo = 30;
+  let diaSugerido = Math.min(Math.max(diferencaDias, 1), 30);
 
-            if (estadoDoDia) {
-                // Restaurar jogo salvo deste dia específico
-                vidas = estadoDoDia.vidas;
-                historicoTentativas = estadoDoDia.historicoTentativas;
-                jogoFinalizado = estadoDoDia.jogoFinalizado;
-                vitoria = estadoDoDia.vitoria;
-                
-                categoriasResolvidas = [];
-                estadoDoDia.categoriasResolvidasNomes.forEach(nome => {
-                    const cat = faseAtualDados.find(c => c.palavra === nome);
-                    if (cat) categoriasResolvidas.push(cat);
-                });
+  // ============================================================
+  // ESTADO
+  // ============================================================
+  let numeroDoDiaSelecionado = diaSugerido;
+  let faseAtualDados = [];
+  let tilesAtivos = [];
+  let tilesSelecionados = [];
+  let categoriasResolvidas = [];
+  let historicoTentativas = [];
+  let vidas = 4;
+  let jogoFinalizado = false;
+  let vitoria = false;
 
-                tilesAtivos = estadoDoDia.tilesAtivosConfig;
-            } else {
-                // Novo jogo deste dia
-                vidas = 4;
-                historicoTentativas = [];
-                jogoFinalizado = false;
-                vitoria = false;
-                categoriasResolvidas = [];
-                tilesAtivos = [];
-                
-                let idCounter = 0;
-                faseAtualDados.forEach(categoria => {
-                    categoria.silabas.forEach(silaba => {
-                        tilesAtivos.push({ id: idCounter++, texto: silaba, selecionado: false });
-                    });
-                });
-                embaralharArray(tilesAtivos);
-            }
+  // ============================================================
+  // DOM REFS
+  // ============================================================
+  const gridEl = document.getElementById('grid');
+  const solvedContainerEl = document.getElementById('solved-container');
+  const livesEl = document.getElementById('lives');
+  const seletorDiaEl = document.getElementById('seletor-dia');
+  const temaDisplayEl = document.getElementById('tema-display');
+  const btnShuffle = document.getElementById('btn-shuffle');
+  const btnDeselect = document.getElementById('btn-deselect');
+  const btnSubmit = document.getElementById('btn-submit');
+  const toastEl = document.getElementById('toast');
+  const endScreenEl = document.getElementById('end-screen');
+  const endTitleEl = document.getElementById('end-title');
+  const endSubtitleEl = document.getElementById('end-subtitle');
+  const emojiGridEl = document.getElementById('emoji-grid');
+  const btnShare = document.getElementById('btn-share');
+  const hiddenOnWinEls = document.querySelectorAll('.hidden-on-win');
 
-            atualizarVidas();
-            renderizar();
+  // ============================================================
+  // INIT
+  // ============================================================
+  function carregarOpcoesDeDias() {
+    seletorDiaEl.innerHTML = '';
+    for (let i = 1; i <= diaAtualMaximo; i++) {
+      const option = document.createElement('option');
+      option.value = i;
+      option.text = `Dia ${i}`;
+      if (i === numeroDoDiaSelecionado) option.selected = true;
+      seletorDiaEl.appendChild(option);
+    }
+    seletorDiaEl.addEventListener('change', (e) => {
+      numeroDoDiaSelecionado = parseInt(e.target.value, 10);
+      inicializarJogoParaDia();
+    });
+  }
 
-            if (jogoFinalizado) {
-                mostrarTelaFinal();
-            } else {
-                salvarEstado();
-            }
-        }
+  function inicializarJogoParaDia() {
+    hiddenOnWinEls.forEach(el => { el.style.display = ''; });
+    endScreenEl.classList.add('hidden');
+    endScreenEl.style.display = 'none';
 
-        // --- SALVAMENTO ---
-        function salvarEstado() {
-            let dbSalvo = JSON.parse(localStorage.getItem('silabaConexa_MultiDias')) || {};
-            dbSalvo[numeroDoDiaSelecionado] = {
-                vidas: vidas,
-                historicoTentativas: historicoTentativas,
-                categoriasResolvidasNomes: categoriasResolvidas.map(c => c.palavra),
-                tilesAtivosConfig: tilesAtivos.map(t => ({...t, selecionado: false})),
-                jogoFinalizado: jogoFinalizado,
-                vitoria: vitoria
-            };
-            localStorage.setItem('silabaConexa_MultiDias', JSON.stringify(dbSalvo));
-        }
+    faseAtualDados = BANCO_DE_FASES[numeroDoDiaSelecionado - 1].palavras;
+    const tema = BANCO_DE_FASES[numeroDoDiaSelecionado - 1].tema;
+    temaDisplayEl.innerHTML = `<strong>Tema</strong><span>${tema}</span>`;
+    const dayNumEl = document.getElementById('status-day-num');
+    if (dayNumEl) dayNumEl.textContent = String(numeroDoDiaSelecionado).padStart(3, '0');
 
-        // --- FUNÇÕES DE LÓGICA ---
-        function embaralharArray(array) {
-            let currentIndex = array.length, randomIndex;
-            while (currentIndex > 0) {
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex--;
-                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-            }
-        }
+    const dbSalvo = JSON.parse(localStorage.getItem('silabaAspenexo_v05_MultiDias')) || {};
+    const estadoDoDia = dbSalvo[numeroDoDiaSelecionado];
+    tilesSelecionados = [];
 
-        function embaralharEAtualizar() {
-            embaralharArray(tilesAtivos);
-            renderizar();
-        }
-
-        function toggleSelecao(tileId) {
-            if (jogoFinalizado) return;
-
-            const tile = tilesAtivos.find(t => t.id === tileId);
-            if (tile.selecionado) {
-                tile.selecionado = false;
-                tilesSelecionados = tilesSelecionados.filter(t => t.id !== tileId);
-            } else {
-                if (tilesSelecionados.length < 4) {
-                    tile.selecionado = true;
-                    tilesSelecionados.push(tile);
-                }
-            }
-            renderizar();
-        }
-
-        function desmarcarTodos() {
-            tilesAtivos.forEach(t => t.selecionado = false);
-            tilesSelecionados = [];
-            renderizar();
-        }
-
-        function obterEmojiDaSilaba(texto) {
-            for (let cat of faseAtualDados) {
-                if (cat.silabas.includes(texto)) return cat.emoji;
-            }
-            return "⬛";
-        }
-
-        function submeterTentativa() {
-            if (tilesSelecionados.length !== 4 || jogoFinalizado) return;
-
-            const textosSelecionados = tilesSelecionados.map(t => t.texto);
-            let linhaEmojis = textosSelecionados.map(t => obterEmojiDaSilaba(t)).sort().join("");
-            historicoTentativas.push(linhaEmojis);
-
-            let encontrou = false;
-            let quaseLa = false;
-            const sorteadosStr = [...textosSelecionados].sort().join("");
-
-            for (let categoria of faseAtualDados) {
-                if (categoriasResolvidas.includes(categoria)) continue;
-
-                const catSilabasStr = [...categoria.silabas].sort().join("");
-
-                if (sorteadosStr === catSilabasStr) {
-                    categoriasResolvidas.push(categoria);
-                    const idsSelecionados = tilesSelecionados.map(t => t.id);
-                    tilesAtivos = tilesAtivos.filter(t => !idsSelecionados.includes(t.id));
-                    tilesSelecionados = [];
-                    encontrou = true;
-                    animarAcertoEAtualizar();
-                    break;
-                }
-            }
-
-            if (!encontrou) {
-                for (let categoria of faseAtualDados) {
-                    if (categoriasResolvidas.includes(categoria)) continue;
-                    let intersec = 0;
-                    let tempSilabas = [...categoria.silabas];
-                    for (let texto of textosSelecionados) {
-                        let idx = tempSilabas.indexOf(texto);
-                        if (idx !== -1) {
-                            intersec++;
-                            tempSilabas.splice(idx, 1);
-                        }
-                    }
-                    if (intersec === 3) quaseLa = true;
-                }
-
-                vidas--;
-                atualizarVidas();
-                
-                if (vidas > 0) {
-                    animarErro();
-                    mostrarToast(quaseLa ? "Faltou apenas uma sílaba!" : "Combinação incorreta!");
-                    salvarEstado();
-                } else {
-                    derrota();
-                }
-            }
-        }
-
-        function verificarVitoria() {
-            if (categoriasResolvidas.length === faseAtualDados.length) {
-                jogoFinalizado = true;
-                vitoria = true;
-                salvarEstado();
-                mostrarTelaFinal();
-            } else {
-                salvarEstado();
-            }
-        }
-
-        function derrota() {
-            jogoFinalizado = true;
-            vitoria = false;
-            animarErro();
-            mostrarToast("Fim de jogo!");
-            
-            setTimeout(() => {
-                faseAtualDados.forEach(cat => {
-                    if (!categoriasResolvidas.includes(cat)) categoriasResolvidas.push(cat);
-                });
-                tilesAtivos = [];
-                tilesSelecionados = [];
-                renderizar();
-                salvarEstado();
-                mostrarTelaFinal();
-            }, 1000);
-        }
-
-        // --- RENDERIZAÇÃO E UI ---
-        function renderizar() {
-            solvedContainerEl.innerHTML = '';
-            categoriasResolvidas.forEach(cat => {
-                const div = document.createElement('div');
-                div.className = `w-full h-20 md:h-24 rounded-lg flex flex-col items-center justify-center transition-all ${jogoFinalizado ? '' : 'bounce'}`;
-                div.style.backgroundColor = cat.cor;
-                
-                const title = document.createElement('span');
-                title.className = "font-bold text-lg md:text-xl text-black";
-                title.textContent = cat.palavra;
-                
-                const subtitle = document.createElement('span');
-                subtitle.className = "text-sm text-black opacity-80 mt-1 font-semibold";
-                subtitle.textContent = cat.silabas.join(" - ");
-
-                div.appendChild(title);
-                div.appendChild(subtitle);
-                solvedContainerEl.appendChild(div);
-            });
-
-            gridEl.innerHTML = '';
-            tilesAtivos.forEach(tile => {
-                const btn = document.createElement('button');
-                btn.className = `tile w-full aspect-square md:h-20 rounded-lg flex items-center justify-center font-bold text-sm md:text-lg cursor-pointer transition-colors `;
-                
-                if (tile.selecionado) {
-                    btn.classList.add('bg-[#5a594e]', 'text-white');
-                } else {
-                    btn.classList.add('bg-[#efefef]', 'text-black', 'hover:bg-[#e2e2e2]');
-                }
-
-                btn.textContent = tile.texto;
-                btn.onclick = () => toggleSelecao(tile.id);
-                gridEl.appendChild(btn);
-            });
-
-            btnDeselect.disabled = tilesSelecionados.length === 0;
-            btnSubmit.disabled = tilesSelecionados.length !== 4;
-        }
-
-        function atualizarVidas() {
-            const dots = livesEl.querySelectorAll('.life-dot');
-            dots.forEach((dot, index) => {
-                if (index < vidas) dot.classList.remove('lost');
-                else dot.classList.add('lost');
-            });
-        }
-
-        function mostrarTelaFinal() {
-            hiddenOnWinEls.forEach(el => el.style.display = 'none');
-            endScreenEl.classList.remove('hidden');
-            endScreenEl.style.display = 'flex';
-
-            if (vitoria) {
-                endTitleEl.textContent = "Parabéns Caio você venceu novamente";
-                endTitleEl.className = "text-2xl font-bold mb-2 text-green-600 text-center";
-                
-                endSubtitleEl.textContent = "seu nome não é Caio? ou você roubou o Caio ou ele se encontra chapado demais neste momento para ter condições de jogar.";
-                endSubtitleEl.className = "text-gray-600 mb-4 text-center text-sm px-2";
-            } else {
-                endTitleEl.textContent = "Não foi dessa vez...";
-                endTitleEl.className = "text-2xl font-bold mb-2 text-red-500";
-                endSubtitleEl.textContent = "Tente jogar outro dia anterior no menu superior!";
-            }
-
-            emojiGridEl.innerHTML = '';
-            historicoTentativas.forEach(linha => {
-                const p = document.createElement('p');
-                p.textContent = linha;
-                emojiGridEl.appendChild(p);
-            });
-        }
-
-        let toastTimeout;
-        function mostrarToast(mensagem) {
-            toastEl.textContent = mensagem;
-            toastEl.classList.add('show');
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => toastEl.classList.remove('show'), 2500);
-        }
-
-        function animarErro() {
-            const botoes = gridEl.querySelectorAll('button');
-            tilesAtivos.forEach((tile, index) => {
-                if (tile.selecionado && botoes[index]) {
-                    botoes[index].classList.add('shake');
-                    setTimeout(() => botoes[index].classList.remove('shake'), 500);
-                }
-            });
-        }
-
-        function animarAcertoEAtualizar() {
-            renderizar();
-            setTimeout(verificarVitoria, 600);
-        }
-
-        // --- SISTEMA DE COMPARTILHAMENTO ---
-        btnShare.addEventListener('click', async () => {
-            let textoCompartilhar = `Silaba Aspenexo - Abril Dia ${numeroDoDiaSelecionado}\n\n`;
-            historicoTentativas.forEach(linha => textoCompartilhar += linha + "\n");
-            textoCompartilhar += `\nhttps://heyiv.github.io/aspversohahaha/`;
-
-            try {
-                if (navigator.share && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                    await navigator.share({ title: 'Silaba Aspenexo', text: textoCompartilhar });
-                } else {
-                    const textArea = document.createElement("textarea");
-                    textArea.value = textoCompartilhar;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-                    mostrarToast("Copiado para a área de transferência!");
-                }
-            } catch (err) {
-                mostrarToast("Erro ao compartilhar!");
-            }
+    if (estadoDoDia) {
+      vidas = estadoDoDia.vidas;
+      historicoTentativas = estadoDoDia.historicoTentativas;
+      jogoFinalizado = estadoDoDia.jogoFinalizado;
+      vitoria = estadoDoDia.vitoria;
+      categoriasResolvidas = [];
+      estadoDoDia.categoriasResolvidasNomes.forEach(nome => {
+        const cat = faseAtualDados.find(c => c.palavra === nome);
+        if (cat) categoriasResolvidas.push(cat);
+      });
+      tilesAtivos = estadoDoDia.tilesAtivosConfig;
+    } else {
+      vidas = 4;
+      historicoTentativas = [];
+      jogoFinalizado = false;
+      vitoria = false;
+      categoriasResolvidas = [];
+      tilesAtivos = [];
+      let idCounter = 0;
+      faseAtualDados.forEach(categoria => {
+        categoria.silabas.forEach(silaba => {
+          tilesAtivos.push({ id: idCounter++, texto: silaba, selecionado: false });
         });
+      });
+      embaralharArray(tilesAtivos);
+    }
 
-        // --- EVENT LISTENERS BÁSICOS ---
-        btnShuffle.addEventListener('click', embaralharEAtualizar);
-        btnDeselect.addEventListener('click', desmarcarTodos);
-        btnSubmit.addEventListener('click', submeterTentativa);
+    atualizarVidas();
+    renderizar();
+    if (jogoFinalizado) mostrarTelaFinal();
+    else salvarEstado();
+  }
 
-        // Inicia o jogo carregando os menus
-        window.onload = () => {
-            carregarOpcoesDeDias();
-            inicializarJogoParaDia();
-        };
+  function salvarEstado() {
+    const dbSalvo = JSON.parse(localStorage.getItem('silabaAspenexo_v05_MultiDias')) || {};
+    dbSalvo[numeroDoDiaSelecionado] = {
+      vidas,
+      historicoTentativas,
+      categoriasResolvidasNomes: categoriasResolvidas.map(c => c.palavra),
+      tilesAtivosConfig: tilesAtivos.map(t => ({ ...t, selecionado: false })),
+      jogoFinalizado,
+      vitoria
+    };
+    localStorage.setItem('silabaAspenexo_v05_MultiDias', JSON.stringify(dbSalvo));
+  }
 
-    </script>
+
+  // ============================================================
+  // LÓGICA DE JOGO
+  // ============================================================
+  function embaralharArray(array) {
+    let i = array.length, j;
+    while (i > 0) {
+      j = Math.floor(Math.random() * i);
+      i--;
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  function embaralharEAtualizar() {
+    embaralharArray(tilesAtivos);
+    renderizar();
+  }
+
+  function toggleSelecao(tileId) {
+    if (jogoFinalizado) return;
+    const tile = tilesAtivos.find(t => t.id === tileId);
+    if (!tile) return;
+    if (tile.selecionado) {
+      tile.selecionado = false;
+      tilesSelecionados = tilesSelecionados.filter(t => t.id !== tileId);
+    } else if (tilesSelecionados.length < 4) {
+      tile.selecionado = true;
+      tilesSelecionados.push(tile);
+    }
+    renderizar();
+  }
+
+  function desmarcarTodos() {
+    tilesAtivos.forEach(t => { t.selecionado = false; });
+    tilesSelecionados = [];
+    renderizar();
+  }
+
+  function obterEmojiDaSilaba(texto) {
+    for (const cat of faseAtualDados) {
+      if (cat.silabas.includes(texto)) return cat.emoji;
+    }
+    return '⬛';
+  }
+
+  function submeterTentativa() {
+    if (tilesSelecionados.length !== 4 || jogoFinalizado) return;
+    const textosSelecionados = tilesSelecionados.map(t => t.texto);
+    const linhaEmojis = textosSelecionados.map(t => obterEmojiDaSilaba(t)).sort().join('');
+    historicoTentativas.push(linhaEmojis);
+
+    let encontrou = false;
+    let quaseLa = false;
+    const sorteadosStr = [...textosSelecionados].sort().join('');
+
+    for (const categoria of faseAtualDados) {
+      if (categoriasResolvidas.includes(categoria)) continue;
+      const catSilabasStr = [...categoria.silabas].sort().join('');
+      if (sorteadosStr === catSilabasStr) {
+        categoriasResolvidas.push(categoria);
+        const idsSelecionados = tilesSelecionados.map(t => t.id);
+        tilesAtivos = tilesAtivos.filter(t => !idsSelecionados.includes(t.id));
+        tilesSelecionados = [];
+        encontrou = true;
+        animarAcertoEAtualizar();
+        break;
+      }
+    }
+
+    if (!encontrou) {
+      for (const categoria of faseAtualDados) {
+        if (categoriasResolvidas.includes(categoria)) continue;
+        let intersec = 0;
+        const tempSilabas = [...categoria.silabas];
+        for (const texto of textosSelecionados) {
+          const idx = tempSilabas.indexOf(texto);
+          if (idx !== -1) { intersec++; tempSilabas.splice(idx, 1); }
+        }
+        if (intersec === 3) quaseLa = true;
+      }
+      vidas--;
+      atualizarVidas();
+      if (vidas > 0) {
+        animarErro();
+        mostrarToast(quaseLa ? 'Faltou apenas uma sílaba!' : 'Combinação incorreta');
+        salvarEstado();
+      } else {
+        derrota();
+      }
+    }
+  }
+
+  function verificarVitoria() {
+    if (categoriasResolvidas.length === faseAtualDados.length) {
+      jogoFinalizado = true;
+      vitoria = true;
+      salvarEstado();
+      mostrarTelaFinal();
+    } else {
+      salvarEstado();
+    }
+  }
+
+  function derrota() {
+    jogoFinalizado = true;
+    vitoria = false;
+    animarErro();
+    mostrarToast('Fim de jogo');
+    setTimeout(() => {
+      faseAtualDados.forEach(cat => {
+        if (!categoriasResolvidas.includes(cat)) categoriasResolvidas.push(cat);
+      });
+      tilesAtivos = [];
+      tilesSelecionados = [];
+      renderizar();
+      salvarEstado();
+      mostrarTelaFinal();
+    }, 1000);
+  }
+
+
+  // ============================================================
+  // RENDER + UI
+  // ============================================================
+  function renderizar() {
+    solvedContainerEl.innerHTML = '';
+    categoriasResolvidas.forEach(cat => {
+      const div = document.createElement('div');
+      div.className = 'solved' + (jogoFinalizado ? '' : ' bounce-in');
+      div.style.backgroundColor = cat.cor;
+      const word = document.createElement('span');
+      word.className = 'word';
+      word.textContent = cat.palavra;
+      const syll = document.createElement('span');
+      syll.className = 'syllables';
+      syll.textContent = cat.silabas.join(' · ');
+      div.appendChild(word);
+      div.appendChild(syll);
+      solvedContainerEl.appendChild(div);
+    });
+
+    gridEl.innerHTML = '';
+    tilesAtivos.forEach(tile => {
+      const btn = document.createElement('button');
+      btn.className = 'tile' + (tile.selecionado ? ' is-on' : '');
+      btn.type = 'button';
+      btn.setAttribute('aria-pressed', tile.selecionado ? 'true' : 'false');
+      btn.textContent = tile.texto;
+      btn.onclick = () => toggleSelecao(tile.id);
+      gridEl.appendChild(btn);
+    });
+
+    btnDeselect.disabled = tilesSelecionados.length === 0;
+    btnSubmit.disabled = tilesSelecionados.length !== 4;
+  }
+
+  function atualizarVidas() {
+    const dots = livesEl.querySelectorAll('.life-dot');
+    dots.forEach((dot, index) => {
+      if (index < vidas) dot.classList.remove('lost');
+      else dot.classList.add('lost');
+    });
+  }
+
+  function mostrarTelaFinal() {
+    hiddenOnWinEls.forEach(el => { el.style.display = 'none'; });
+    endScreenEl.classList.remove('hidden');
+    endScreenEl.style.display = 'flex';
+
+    if (vitoria) {
+      endTitleEl.innerHTML = 'Parabéns <em>Caio</em>, venceu de novo';
+      endTitleEl.className = 'end-title win';
+      endSubtitleEl.textContent = 'Seu nome não é Caio? Ou você roubou o Caio, ou ele se encontra chapado demais neste momento para ter condições de jogar.';
+    } else {
+      endTitleEl.innerHTML = 'Não foi <em>dessa vez</em>';
+      endTitleEl.className = 'end-title';
+      endSubtitleEl.textContent = 'Tente outro dia anterior no menu superior.';
+    }
+
+    emojiGridEl.innerHTML = '';
+    historicoTentativas.forEach(linha => {
+      const p = document.createElement('p');
+      p.textContent = linha;
+      emojiGridEl.appendChild(p);
+    });
+  }
+
+  let toastTimeout;
+  function mostrarToast(mensagem) {
+    toastEl.textContent = mensagem;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toastEl.classList.remove('show'), 2400);
+  }
+
+  function animarErro() {
+    const botoes = gridEl.querySelectorAll('button');
+    tilesAtivos.forEach((tile, index) => {
+      if (tile.selecionado && botoes[index]) {
+        botoes[index].classList.add('shake');
+        setTimeout(() => botoes[index].classList.remove('shake'), 360);
+      }
+    });
+  }
+
+  function animarAcertoEAtualizar() {
+    renderizar();
+    setTimeout(verificarVitoria, 500);
+  }
+
+  // ============================================================
+  // SHARE
+  // ============================================================
+  btnShare.addEventListener('click', async () => {
+    let texto = `Sílaba Aspenexo · Maio Dia ${numeroDoDiaSelecionado}\n\n`;
+    historicoTentativas.forEach(linha => { texto += linha + '\n'; });
+    texto += `\nhttps://heyiv.github.io/aspversohahaha/`;
+    try {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (navigator.share && isMobile) {
+        await navigator.share({ title: 'Sílaba Aspenexo', text: texto });
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = texto;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        mostrarToast('Copiado para a área de transferência');
+      }
+    } catch (err) {
+      mostrarToast('Erro ao compartilhar');
+    }
+  });
+
+  btnShuffle.addEventListener('click', embaralharEAtualizar);
+  btnDeselect.addEventListener('click', desmarcarTodos);
+  btnSubmit.addEventListener('click', submeterTentativa);
+
+  // ============================================================
+  // SEASON SELECTOR — 4 paletas OKLCH
+  // ============================================================
+  const SEASONS = ['primavera', 'verao', 'outono', 'inverno'];
+  const SEASON_KEY = 'silabaAspenexo_v05_season';
+
+  function detectarEstacaoPorData() {
+    // Hemisfério Norte (Tóquio JST). Mar-Mai primavera, Jun-Ago verão,
+    // Set-Nov outono, Dez-Fev inverno.
+    const m = new Date().getMonth(); // 0=jan
+    if (m >= 2 && m <= 4) return 'primavera';
+    if (m >= 5 && m <= 7) return 'verao';
+    if (m >= 8 && m <= 10) return 'outono';
+    return 'inverno';
+  }
+
+  const SEASON_MODES = {
+    primavera: 'PINK_NOISE',
+    verao:     'OVERLOAD',
+    outono:    'EMBER_CORE',
+    inverno:   'ICE_CORE'
+  };
+
+  function aplicarEstacao(season) {
+    if (!SEASONS.includes(season)) season = 'primavera';
+    document.documentElement.setAttribute('data-season', season);
+    document.querySelectorAll('.season-pill').forEach(btn => {
+      btn.setAttribute('aria-pressed', btn.dataset.season === season ? 'true' : 'false');
+    });
+    const modeEl = document.getElementById('status-mode');
+    if (modeEl) modeEl.textContent = SEASON_MODES[season];
+    localStorage.setItem(SEASON_KEY, season);
+  }
+
+  function inicializarSeletorEstacao() {
+    const salva = localStorage.getItem(SEASON_KEY);
+    const inicial = salva && SEASONS.includes(salva) ? salva : detectarEstacaoPorData();
+    aplicarEstacao(inicial);
+    document.querySelectorAll('.season-pill').forEach(btn => {
+      btn.addEventListener('click', () => aplicarEstacao(btn.dataset.season));
+    });
+  }
+
+  window.addEventListener('load', () => {
+    carregarOpcoesDeDias();
+    inicializarJogoParaDia();
+    inicializarSeletorEstacao();
+  });
+</script>
+
 </body>
 </html>
