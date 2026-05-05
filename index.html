@@ -973,193 +973,292 @@
 
 <script>
   // ============================================================
-  // BANCO DE FASES — preservado intacto do v01 (30 dias).
+  // BANCO DE FASES — temporada Maio 2026 (31 dias).
   // Cores referenciam CSS variables OKLCH em vez de hex bare.
   // ============================================================
   const CORES = ["var(--cat-1)", "var(--cat-2)", "var(--cat-3)", "var(--cat-4)"];
   const EMOJIS = ["🟨", "🟩", "🟦", "🟪"];
 
   const BANCO_DE_FASES = [
-    { tema: "Animes Clássicos", palavras: [
-      { palavra: "INUYASHA", silabas: ["I","NU","YA","SHA"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "SAILORMOON", silabas: ["SAI","LOR","MO","ON"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "AKATSUKI", silabas: ["A","KA","TSU","KI"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "SHINIGAMI", silabas: ["SHI","NI","GA","MI"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Marcas Brasileiras", palavras: [
-      { palavra: "HAVAIANAS", silabas: ["HA","VA","IA","NAS"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "MAGAZINE", silabas: ["MA","GA","ZI","NE"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "LOCALIZA", silabas: ["LO","CA","LI","ZA"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "HABIBSCHIK", silabas: ["HA","BIBS","CHI","CK"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Xingamentos Roça", palavras: [
-      { palavra: "SAFADENHO", silabas: ["SA","FA","DE","NHO"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "PERIQUITO", silabas: ["PE","RI","QUI","TO"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "NOVELEIRO", silabas: ["NO","VE","LEI","RO"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "PANDEMONIO", silabas: ["PAN","DE","MO","NIO"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Heróis Nerd", palavras: [
-      { palavra: "DAREDEVIL", silabas: ["DA","RE","DE","VIL"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "WOLVERINE", silabas: ["WOL","VE","RI","NE"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "HOMARANHA", silabas: ["HO","MA","RA","NHA"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "MISTERIOSO", silabas: ["MIS","TE","RI","OSO"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Minha Sogra É...", palavras: [
-      { palavra: "MEXERICA", silabas: ["ME","XE","RI","CA"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "LINGUARUDA", silabas: ["LIN","GUA","RU","DA"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "METIDONA", silabas: ["ME","TI","DO","NA"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "ENCRENQUEIRA", silabas: ["EN","CREN","QUEI","RA"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Desculpa pra Faltar Aula", palavras: [
-      { palavra: "INFLUENZA", silabas: ["IN","FLU","EN","ZA"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "MENINGITE", silabas: ["ME","NIN","GI","TE"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "SARAMPINHA", silabas: ["SA","RAM","PI","NHA"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "TENDINITE", silabas: ["TEN","DI","NI","TE"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Pokémons 4-síl", palavras: [
-      { palavra: "DRAGONITE", silabas: ["DRA","GO","NI","TE"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "VAPOREON", silabas: ["VA","PO","RE","ON"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "ARCANINE", silabas: ["AR","CA","NI","NE"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "NINETALES", silabas: ["NI","NE","TA","LES"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Filmes Cabeça", palavras: [
-      { palavra: "INCEPTION", silabas: ["IN","CEP","TI","ON"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "INTERSTELLAR", silabas: ["IN","TER","STEL","LAR"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "MEMENTOSO", silabas: ["ME","MEN","TO","SO"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "MULHOLLAND", silabas: ["MUL","HOL","LAN","D"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Apelidos de Cama", palavras: [
-      { palavra: "GOSTOSURA", silabas: ["GOS","TO","SU","RA"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "LINDEZINHA", silabas: ["LIN","DE","ZI","NHA"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "CHEIROSINHA", silabas: ["CHEI","RO","SI","NHA"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "PRINCEZINHA", silabas: ["PRIN","CE","ZI","NHA"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Bandas BR", palavras: [
-      { palavra: "PARALAMAS", silabas: ["PA","RA","LA","MAS"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "LOSHERMANOS", silabas: ["LOS","HER","MA","NOS"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "SEPULTURA", silabas: ["SE","PUL","TU","RA"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "CHARLIEBROWN", silabas: ["CHAR","LIE","BRO","WN"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Sériesneflix", palavras: [
-      { palavra: "SQUIDGAME", silabas: ["SQU","ID","GA","ME"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "WANDINHA", silabas: ["WAN","DI","NHA","Z"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "STRANGERTHINGS", silabas: ["STRAN","GER","THIN","GS"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "MINDHUNTER", silabas: ["MIND","HUN","TE","R"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Game of Thrones", palavras: [
-      { palavra: "KHALEESI", silabas: ["KHA","LE","E","SI"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "WINTERFELL", silabas: ["WIN","TER","FE","LL"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "TARGARYEN", silabas: ["TAR","GA","RY","EN"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "LANNISTER", silabas: ["LAN","NIS","TE","R"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Cantadas Cafonas", palavras: [
-      { palavra: "BANANINHA", silabas: ["BA","NA","NI","NHA"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "ANJINHODEUS", silabas: ["AN","JI","NHO","DEUS"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "GATAFINA", silabas: ["GA","TA","FI","NA"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "DOCURINHA", silabas: ["DO","CU","RI","NHA"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "BBB Frases", palavras: [
-      { palavra: "CONSPIRA", silabas: ["CONS","PI","RA","Z"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "MIMIMINHO", silabas: ["MI","MI","MI","NHO"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "FAKENEWS", silabas: ["FA","KE","NE","WS"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "PAREDÃO", silabas: ["PA","RE","DÃ","O"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Mortal Kombat", palavras: [
-      { palavra: "SUBZERO", silabas: ["SUB","ZE","RO","Z"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "SCORPION", silabas: ["SCOR","PI","O","N"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "LIUKANG", silabas: ["LI","U","KA","NG"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "RAIDENZIN", silabas: ["RAI","DEN","ZI","N"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Drogas Eufemismo", palavras: [
-      { palavra: "BAGULHINHO", silabas: ["BA","GU","LHI","NHO"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "BARANGO", silabas: ["BA","RAN","GO","Z"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "PACOTAÇO", silabas: ["PA","CO","TA","ÇO"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "CACHORRADA", silabas: ["CA","CHOR","RA","DA"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Boteco BR", palavras: [
-      { palavra: "CACHACINHA", silabas: ["CA","CHA","CI","NHA"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "PETISQUEIRA", silabas: ["PE","TIS","QUEI","RA"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "SALGADINHO", silabas: ["SAL","GA","DI","NHO"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "CERVEJADA", silabas: ["CER","VE","JA","DA"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Memes Internet", palavras: [
-      { palavra: "CARALEO", silabas: ["CA","RA","LE","O"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "SUSSUMU", silabas: ["SUS","SU","MU","Z"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "CABULOSO", silabas: ["CA","BU","LO","SO"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "VIDALOUCA", silabas: ["VI","DA","LOU","CA"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Crush Indireto", palavras: [
-      { palavra: "STORYINDIRETA", silabas: ["STO","RY","IN","DI"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "RECADINHO", silabas: ["RE","CA","DI","NHO"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "OLHADINHA", silabas: ["O","LHA","DI","NHA"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "PISCADELA", silabas: ["PIS","CA","DE","LA"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Mil Grau", palavras: [
-      { palavra: "SARRADINHO", silabas: ["SAR","RA","DI","NHO"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "DESCABELADO", silabas: ["DES","CA","BE","LA"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "TROVOADA", silabas: ["TRO","VO","A","DA"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "ARROCHADO", silabas: ["AR","RO","CHA","DO"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Mascotes BR", palavras: [
-      { palavra: "MAGALU", silabas: ["MA","GA","LU","Z"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "BIDU", silabas: ["BI","DU","UU","Z"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "TIGRINHO", silabas: ["TI","GRI","NHO","Z"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "CARIOCA", silabas: ["CA","RI","O","CA"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Boletim Mãe", palavras: [
-      { palavra: "RECUPERA", silabas: ["RE","CU","PE","RA"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "REPROVADO", silabas: ["RE","PRO","VA","DO"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "CHAMADINHA", silabas: ["CHA","MA","DI","NHA"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "DECONESELO", silabas: ["DE","CO","NE","SE"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Star Wars", palavras: [
-      { palavra: "SKYWALKER", silabas: ["SKY","WAL","KE","R"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "DARTHVADER", silabas: ["DAR","TH","VA","DER"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "CHEWBACCA", silabas: ["CHEW","BA","CCA","Z"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "YODAINHA", silabas: ["YO","DA","I","NHA"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Frases de Mãe", palavras: [
-      { palavra: "CALABOCA", silabas: ["CA","LA","BO","CA"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "DINHEIRINHO", silabas: ["DI","NHEI","RI","NHO"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "APANHARÁS", silabas: ["A","PA","NHA","RÁS"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "VAINOCANTO", silabas: ["VAI","NO","CAN","TO"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Funk Carioca", palavras: [
-      { palavra: "PIRANHADA", silabas: ["PI","RA","NHA","DA"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "BAILADELO", silabas: ["BAI","LA","DE","LO"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "RABODESEDA", silabas: ["RA","BO","DE","SE"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "MONTADINHO", silabas: ["MON","TA","DI","NHO"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Vingadores", palavras: [
-      { palavra: "CAPMERICA", silabas: ["CAP","ME","RI","CA"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "HOMEMFORMIGA", silabas: ["HO","MEM","FOR","MI"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "VIUVANEGRA", silabas: ["VI","U","VA","NE"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "DOUTORESTRANHO", silabas: ["DOU","TOR","ES","TRAN"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Game Vintage", palavras: [
-      { palavra: "ATARI2600", silabas: ["A","TA","RI","2600"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "MEGADRIVE", silabas: ["ME","GA","DRI","VE"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "DREAMCAST", silabas: ["DRE","AM","CAS","T"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "NINTENDO64", silabas: ["NIN","TEN","DO","64"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Gírias Carioca", palavras: [
-      { palavra: "MANEIRO", silabas: ["MA","NEI","RO","Z"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "CACETADO", silabas: ["CA","CE","TA","DO"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "MARMELADA", silabas: ["MAR","ME","LA","DA"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "CARETICE", silabas: ["CA","RE","TI","CE"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Programa Domingão", palavras: [
-      { palavra: "FAUSTÃOZÃO", silabas: ["FAUS","TÃO","ZÃ","O"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "DOMINGÃOZÃO", silabas: ["DO","MIN","GÃO","ZÃO"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "CALDEIRÃO", silabas: ["CAL","DEI","RÃ","O"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "BAILEDOFAUS", silabas: ["BAI","LE","DO","FAUS"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]},
-    { tema: "Mochilada Tóquio", palavras: [
-      { palavra: "AKIHABARA", silabas: ["A","KI","HA","BA"], cor: CORES[0], emoji: EMOJIS[0] },
-      { palavra: "HARAJUKU", silabas: ["HA","RA","JU","KU"], cor: CORES[1], emoji: EMOJIS[1] },
-      { palavra: "ROPPONGI", silabas: ["RO","PPON","GI","Z"], cor: CORES[2], emoji: EMOJIS[2] },
-      { palavra: "ASAKUSA", silabas: ["A","SA","KU","SA"], cor: CORES[3], emoji: EMOJIS[3] }
-    ]}
+    { // Dia 01
+      tema: "Profissões nos Games",
+      palavras: [
+        { palavra: "Encanador", silabas: ["EN","CA","NA","DOR"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Arqueóloga", silabas: ["AR","QUE","Ó","LOGA"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Ouriço", silabas: ["OU","RI","ÇO","AZUL"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Lutador", silabas: ["LU","TA","DOR","X"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 02
+      tema: "Gigantes do YouTube Brasileiro 2026",
+      palavras: [
+        { palavra: "CazéTV", silabas: ["CA","ZÉ","T","V"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Enaldinho", silabas: ["E","NAL","DI","NHO"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "KondZilla", silabas: ["KOND","ZI","LLA","BR"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Natan por Aí", silabas: ["NA","TAN","POR","AÍ"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 03
+      tema: "Protagonistas Absolutos de Anime Clássico",
+      palavras: [
+        { palavra: "Goku", silabas: ["GO","KU","SAI","YAN"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Naruto", silabas: ["NA","RU","TO","UZU"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Luffy", silabas: ["LU","FF","Y","PIRA"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Seiya", silabas: ["SEI","YA","PE","GASO"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 04
+      tema: "Lendas de Star Wars",
+      palavras: [
+        { palavra: "Luke Skywalker", silabas: ["LUKE","SKY","WAL","KER"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Princesa Leia", silabas: ["PRIN","CE","SA","LEIA"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Han Solo", silabas: ["HAN","SO","LO","FALC"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Darth Vader", silabas: ["DARTH","VA","DER","SITH"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 05
+      tema: "Heróis Principais da Marvel",
+      palavras: [
+        { palavra: "Homem de Ferro", silabas: ["HO","MEM","DE","FERRO"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Capitão América", silabas: ["CA","PI","TÃO","AMÉRICA"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Thor", silabas: ["TH","OR","AS","GARD"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Hulk", silabas: ["HU","LK","GIG","ANTE"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 06
+      tema: "Heróis Principais da DC",
+      palavras: [
+        { palavra: "Superman", silabas: ["SU","PER","MAN","KRY"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Batman", silabas: ["BAT","MAN","GO","THAM"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Mulher Maravilha", silabas: ["MU","LHER","MARA","VILHA"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Flash", silabas: ["FLA","SH","VE","LOZ"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 07
+      tema: "Divisões das Casas de Hogwarts",
+      palavras: [
+        { palavra: "Grifinória", silabas: ["GRI","FI","NÓ","RIA"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Sonserina", silabas: ["SON","SE","RI","NA"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Corvinal", silabas: ["COR","VI","NAL","AZUL"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Lufa-Lufa", silabas: ["LU","FA","LU","FA"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 08
+      tema: "Núcleo da Sociedade do Anel",
+      palavras: [
+        { palavra: "Frodo", silabas: ["FRO","DO","BOL","SEIRO"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Gandalf", silabas: ["GAN","DAL","F","CINZA"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Aragorn", silabas: ["A","RA","GORN","REI"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Legolas", silabas: ["LE","GO","LAS","ELFO"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 09
+      tema: "Marcas de Consoles de Videogame Famosas",
+      palavras: [
+        { palavra: "PlayStation", silabas: ["PLAY","STA","TI","ON"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Super Nintendo", silabas: ["SU","PER","NIN","TENDO"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Mega Drive", silabas: ["ME","GA","DRI","VE"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Xbox", silabas: ["X","BO","X","LIVE"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 10
+      tema: "Mães Famosas",
+      palavras: [
+        { palavra: "Dona Florinda", silabas: ["DO","NA","FLO","RINDA"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Marge Simpson", silabas: ["MAR","GE","SIMP","SON"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Mortícia Addams", silabas: ["MOR","TÍ","CIA","ADDAMS"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Dona Nenê", silabas: ["DO","NA","NE","NÊ"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 11
+      tema: "Feitiços Universais de Harry Potter",
+      palavras: [
+        { palavra: "Expecto Patronum", silabas: ["EX","PEC","TO","PATRONUM"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Lumos", silabas: ["LU","MOS","LUZ","BRUXA"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Expelliarmus", silabas: ["EX","PELLI","AR","MUS"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Avada Kedavra", silabas: ["A","VA","DA","KEDAVRA"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 12
+      tema: "Clássicos de Programas Infantis da TV Brasileira",
+      palavras: [
+        { palavra: "Castelo Rá-Tim-Bum", silabas: ["CAS","TELO","RÁ","TIM-BUM"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Sítio do Picapau", silabas: ["SÍ","TIO","PICA","PAU"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "TV Colosso", silabas: ["T","V","CO","LOSSO"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Bom Dia & Cia", silabas: ["BOM","DIA","&","CIA"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 13
+      tema: "Cidades Fictícias Muito Reconhecidas",
+      palavras: [
+        { palavra: "Gotham City", silabas: ["GO","THAM","CI","TY"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Metrópolis", silabas: ["ME","TRÓ","PO","LIS"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Wakanda", silabas: ["WA","KAN","DA","FOREVER"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Springfield", silabas: ["SPRING","FI","ELD","SIMP"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 14
+      tema: "Vilões Monumentais da Cultura Pop",
+      palavras: [
+        { palavra: "Coringa", silabas: ["CO","RIN","GA","CAOS"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Thanos", silabas: ["THA","NOS","LU","VA"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Voldemort", silabas: ["VOL","DE","MORT","BRUXO"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Darth Vader", silabas: ["DARTH","VA","DER","SITH"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 15
+      tema: "Artefatos e Itens Mágicos Populares",
+      palavras: [
+        { palavra: "Varinha Mágica", silabas: ["VA","RI","NHA","MÁGICA"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Anel do Poder", silabas: ["A","NEL","DO","PODER"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Capa da Invisibilidade", silabas: ["CA","PA","INVISI","BILIDADE"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Sabre de Luz", silabas: ["SA","BRE","DE","LUZ"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 16
+      tema: "Elementos Pokémons Iniciais Clássicos",
+      palavras: [
+        { palavra: "Bulbasaur", silabas: ["BUL","BA","SA","UR"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Charmander", silabas: ["CHAR","MAN","DER","FOGO"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Squirtle", silabas: ["SQUIR","TLE","Á","GUA"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Pikachu", silabas: ["PI","KA","CHU","RAIO"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 17
+      tema: "Feriados Nacionais e Pontos Facultativos do Brasil",
+      palavras: [
+        { palavra: "Carnaval", silabas: ["CAR","NA","VAL","FOLIA"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Tiradentes", silabas: ["TI","RA","DEN","TES"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Corpus Christi", silabas: ["COR","PUS","CHRIS","TI"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Finados", silabas: ["FI","NA","DOS","LUTO"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 18
+      tema: "Acessórios Clássicos de Super-Heróis",
+      palavras: [
+        { palavra: "Escudo", silabas: ["ES","CU","DO","CAP"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Martelo", silabas: ["MAR","TE","LO","THOR"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Laço da Verdade", silabas: ["LA","ÇO","DA","VERDADE"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Batarangue", silabas: ["BA","TA","RAN","GUE"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 19
+      tema: "Comidas e Ingredientes Famosos da Cultura Pop",
+      palavras: [
+        { palavra: "Cogumelo", silabas: ["CO","GU","ME","LO"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Lamen", silabas: ["LA","MEN","NARU","TO"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Hambúrguer de Siri", silabas: ["HAM","BÚR","GUER","SIRI"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Fruta do Diabo", silabas: ["FRU","TA","DO","DIABO"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 20
+      tema: "Mascotes Primordiais da Indústria de Games",
+      palavras: [
+        { palavra: "Sonic", silabas: ["SO","NIC","OURI","ÇO"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Mario", silabas: ["MA","RI","O","MUSH"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Crash Bandicoot", silabas: ["CRASH","BAN","DI","COOT"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Pac-Man", silabas: ["PAC","MAN","COME","PONTO"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 21
+      tema: "Gírias Usadas pela Comunidade Gamer Brasileira",
+      palavras: [
+        { palavra: "Noob", silabas: ["NO","OB","INI","CIANTE"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Lag", silabas: ["LA","G","TRAVA","NET"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Tankar", silabas: ["TAN","KAR","SEG","URAR"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Nerfar", silabas: ["NER","FAR","BAL","ANCEAR"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 22
+      tema: "Mentores, Mestres e Professores Famosos",
+      palavras: [
+        { palavra: "Mestre Yoda", silabas: ["MES","TRE","YO","DA"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Professor Xavier", silabas: ["PRO","FES","SOR","XAVIER"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Dumbledore", silabas: ["DUM","BLE","DO","RE"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Mestre Kame", silabas: ["MES","TRE","KA","ME"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 23
+      tema: "Franquias de Literatura Jovem Adaptadas ao Cinema",
+      palavras: [
+        { palavra: "As Crônicas de Nárnia", silabas: ["AS","CRÔNICAS","DE","NÁRNIA"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Jogos Vorazes", silabas: ["JO","GOS","VO","RAZES"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Crepúsculo", silabas: ["CRE","PÚS","CU","LO"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Percy Jackson", silabas: ["PER","CY","JACK","SON"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 24
+      tema: "Séries de TV Que Dominaram o Assunto na Internet",
+      palavras: [
+        { palavra: "Game of Thrones", silabas: ["GAME","OF","THRO","NES"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Stranger Things", silabas: ["STRAN","GER","THIN","GS"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "The Boys", silabas: ["THE","BO","YS","HERO"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Breaking Bad", silabas: ["BREA","KING","BA","D"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 25
+      tema: "Alicerces do Dia do Orgulho Nerd",
+      palavras: [
+        { palavra: "Star Wars", silabas: ["STAR","WA","RS","FORÇA"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "O Senhor dos Anéis", silabas: ["O","SENHOR","DOS","ANÉIS"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Harry Potter", silabas: ["HAR","RY","POT","TER"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Matrix", silabas: ["MA","TRI","X","NEO"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 26
+      tema: "Espectro de Cores Clássicas de Sabres de Luz",
+      palavras: [
+        { palavra: "Azul", silabas: ["A","ZUL","JEDI","SABRE"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Verde", silabas: ["VER","DE","YODA","LUZ"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Vermelho", silabas: ["VER","ME","LHO","SITH"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Roxo", silabas: ["RO","XO","MACE","WINDU"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 27
+      tema: "Personagens do Seriados Chaves",
+      palavras: [
+        { palavra: "Chaves", silabas: ["CHA","VES","VILA","8"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Quico", silabas: ["QUI","CO","BO","CHECHA"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Seu Madruga", silabas: ["SEU","MA","DRU","GA"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Chiquinha", silabas: ["CHI","QUI","NHA","ÓCULOS"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 28
+      tema: "Animes Explosivos Lançados na TV Aberta BR",
+      palavras: [
+        { palavra: "Cavaleiros do Zodíaco", silabas: ["CAVA","LEIROS","DO","ZODÍACO"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Dragon Ball Z", silabas: ["DRA","GON","BALL","Z"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Pokémon", silabas: ["PO","KÉ","MON","BR"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Yu-Gi-Oh!", silabas: ["YU","GI","OH","!"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 29
+      tema: "Franquias de Jogos Sérios e Polêmicos para Adultos",
+      palavras: [
+        { palavra: "GTA San Andreas", silabas: ["GTA","SAN","AN","DREAS"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "God of War", silabas: ["GOD","OF","WA","R"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Mortal Kombat", silabas: ["MOR","TAL","KOM","BAT"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Red Dead Redemption", silabas: ["RED","DEAD","RE","DEMPTION"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 30
+      tema: "Animais, Pets e Companheiros Famosos",
+      palavras: [
+        { palavra: "Scooby-Doo", silabas: ["SCOO","BY","DO","O"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Edwiges", silabas: ["ED","WI","GES","CORUJA"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "Pikachu", silabas: ["PI","KA","CHU","RAIO"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Yoshi", silabas: ["YO","SHI","DINO","VERDE"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    },
+    { // Dia 31
+      tema: "Anti-heróis e Sátiras Populares do Gênero de Heróis",
+      palavras: [
+        { palavra: "Deadpool", silabas: ["DEAD","PO","OL","WADE"], cor: CORES[0], emoji: EMOJIS[0] },
+        { palavra: "Venom", silabas: ["VE","NOM","SIM","BIONTE"], cor: CORES[1], emoji: EMOJIS[1] },
+        { palavra: "The Boys", silabas: ["THE","BO","YS","VOUGHT"], cor: CORES[2], emoji: EMOJIS[2] },
+        { palavra: "Kick-Ass", silabas: ["KICK","AS","S","HERO"], cor: CORES[3], emoji: EMOJIS[3] }
+      ]
+    }
   ];
 </script>
 
@@ -1172,10 +1271,10 @@
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
   let diferencaDias = Math.floor((hoje.getTime() - DATA_LANCAMENTO.getTime()) / (1000 * 60 * 60 * 24));
-  // Modo "amigos / GitHub Pages": todos os 30 dias liberados de uma vez.
-  // (Pra voltar ao modo NYT-style 1-por-dia, troque pra: diferencaDias > 0 ? Math.min(diferencaDias, 30) : 1)
-  let diaAtualMaximo = 30;
-  let diaSugerido = Math.min(Math.max(diferencaDias, 1), 30);
+  // Modo "amigos / GitHub Pages": todos os 31 dias liberados de uma vez.
+  // (Pra voltar ao modo NYT-style 1-por-dia, troque pra: diferencaDias > 0 ? Math.min(diferencaDias, 31) : 1)
+  let diaAtualMaximo = 31;
+  let diaSugerido = Math.min(Math.max(diferencaDias, 1), 31);
 
   // ============================================================
   // ESTADO
@@ -1238,7 +1337,7 @@
     const dayNumEl = document.getElementById('status-day-num');
     if (dayNumEl) dayNumEl.textContent = String(numeroDoDiaSelecionado).padStart(3, '0');
 
-    const dbSalvo = JSON.parse(localStorage.getItem('silabaAspenexo_v05_MultiDias')) || {};
+    const dbSalvo = JSON.parse(localStorage.getItem('silabaAspenexo_v06_MultiDias')) || {};
     const estadoDoDia = dbSalvo[numeroDoDiaSelecionado];
     tilesSelecionados = [];
 
@@ -1276,7 +1375,7 @@
   }
 
   function salvarEstado() {
-    const dbSalvo = JSON.parse(localStorage.getItem('silabaAspenexo_v05_MultiDias')) || {};
+    const dbSalvo = JSON.parse(localStorage.getItem('silabaAspenexo_v06_MultiDias')) || {};
     dbSalvo[numeroDoDiaSelecionado] = {
       vidas,
       historicoTentativas,
@@ -1285,7 +1384,7 @@
       jogoFinalizado,
       vitoria
     };
-    localStorage.setItem('silabaAspenexo_v05_MultiDias', JSON.stringify(dbSalvo));
+    localStorage.setItem('silabaAspenexo_v06_MultiDias', JSON.stringify(dbSalvo));
   }
 
 
@@ -1533,7 +1632,7 @@
   // SEASON SELECTOR — 4 paletas OKLCH
   // ============================================================
   const SEASONS = ['primavera', 'verao', 'outono', 'inverno'];
-  const SEASON_KEY = 'silabaAspenexo_v05_season';
+  const SEASON_KEY = 'silabaAspenexo_v06_season';
 
   function detectarEstacaoPorData() {
     // Hemisfério Norte (Tóquio JST). Mar-Mai primavera, Jun-Ago verão,
